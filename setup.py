@@ -17,7 +17,7 @@ resource_files += find_resource_files('tethysapp/' + app_package + '/workspaces'
 setup(
     name=release_package,
     version='0.0.1',
-    description='An app demonstrating the steps needed to cshow timeseries raster data and extract timeseries from the source files',
+    description='An app demonstrating the steps needed to show time series raster data and to extract and plot series',
     long_description='',
     keywords='',
     author='Riley Hales',
