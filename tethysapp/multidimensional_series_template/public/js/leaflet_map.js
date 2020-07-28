@@ -39,14 +39,13 @@ function basemaps() {
 ////////////////////////////////////////////////////////////////////////  GLDAS LAYERS
 function newWMS() {
     let layer = $("#variables").val();
-    let wmsurl = threddsbase + $("#dates").val() + '.ncml';
+    let wmsurl = threddsbase + 'multidimensional_data_tutorial.ncml';
     let cs_rng = bounds[layer];
     if ($("#use_csrange").is(":checked")) {
         cs_rng = String($("#cs_min").val()) + ',' + String($("#cs_max").val())
     }
 
     let wmsLayer = L.tileLayer.wms(wmsurl, {
-        // version: '1.3.0',
         layers: layer,
         dimension: 'time',
         useCache: true,
@@ -124,44 +123,11 @@ function countriesESRI() {
     return layer;
 }
 
-////////////////////////////////////////////////////////////////////////  USER'S CUSTOM UPLOADED SHAPEFILE
-let user_shapefile = L.geoJSON(false);
-let user_geojson = L.geoJSON(false, {onEachFeature: function (feature, layer) {
-            layer.bindPopup('<a class="btn btn-default" role="button" onclick="getShapeChart(' + "'GeoJSON'" + ')">Get timeseries for my GeoJSON</a>');
-        }});
-// gets the geojson layers from geoserver wfs and updates the layer
-function getGeoServerGJ(gsworksp, shpname, gsurl) {
-    let parameters = L.Util.extend({
-        service: 'WFS',
-        version: '1.0.0',
-        request: 'GetFeature',
-        typeName: gsworksp + ':' + shpname,
-        maxFeatures: 10000,
-        outputFormat: 'application/json',
-        parseResponse: 'getJson',
-        srsName: 'EPSG:4326',
-        crossOrigin: 'anonymous'
-    });
-    $.ajax({
-        async: true,
-        jsonp: false,
-        url: gsurl + L.Util.getParamString(parameters),
-        contentType: 'application/json',
-        success: function (data) {
-            user_shapefile.clearLayers();
-            mapObj.removeLayer(drawnItems);
-            user_shapefile.addData(data).addTo(mapObj);
-            styleGeoJSON();
-            mapObj.flyToBounds(user_shapefile.getBounds());
-        },
-    });
-}
-
 ////////////////////////////////////////////////////////////////////////  LEGEND AND LATLON CONTROLS
 let legend = L.control({position: 'bottomright'});
 legend.onAdd = function () {
     let layer = $("#variables").val();
-    let wmsurl = threddsbase + $("#dates").val() + '.ncml';
+    let wmsurl = threddsbase + 'multidimensional_data_tutorial.ncml';
     let cs_rng = bounds[layer];
     if ($("#use_csrange").is(":checked")) {
         cs_rng = String($("#cs_min").val()) + ',' + String($("#cs_max").val())
@@ -186,8 +152,6 @@ function makeControls() {
     return L.control.layers(basemapObj, {
         'Earth Observation': layerWMS,
         'Drawing on Map': drawnItems,
-        'Uploaded Shapefile': user_shapefile,
-        'Uploaded GeoJSON': user_geojson,
         'Region Boundaries': layerRegion,
     }).addTo(mapObj);
 }
@@ -195,8 +159,6 @@ function makeControls() {
 function clearMap() {
     controlsObj.removeLayer(layerWMS);
     mapObj.removeLayer(layerWMS);
-    controlsObj.removeLayer(user_shapefile);
-    controlsObj.removeLayer(user_geojson);
     controlsObj.removeLayer(layerRegion);
     mapObj.removeControl(controlsObj);
 }
