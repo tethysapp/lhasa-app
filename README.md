@@ -2,7 +2,7 @@
 
 This is a tethys app for demonstrating the steps you need to program in order to:
 1. Show animated maps of raster data via open source tools (THREDDS Data Server)
-2. Extract time series of values from the multidimensional raster files in a web app environment 
+2. Extract time series of values from the multidimensional raster files in a web app environment
 
 © Riley Hales, 2020. Developed at the BYU Hydroinformatics Lab for a SERVIR Hackathon event August 2020
 
@@ -11,6 +11,7 @@ This is a tethys app for demonstrating the steps you need to program in order to
 1. I would highly recommend you use an IDE (integrated development environment) for this exercise. PyCharm has a free version which is excellent.
 2. You need to have installed tethys via and activated the tethys environment in your bash shell (http://docs.tethysplatform.org/en/stable/installation.html)
 3. You need access to the Docker CLI (https://docs.docker.com/desktop/). Preferably, you have pulled the image for THREDDS Data server (`docker pull unidata/thredds-docker:latest`)
+4. Highly recommend you have installed Panoply (https://www.giss.nasa.gov/tools/panoply/)
 
 ## Step 1: Clone this app and install
 
@@ -21,8 +22,8 @@ conda activate your_tethys_environment
 
 I have done some initial programming work to provide a foundation for the sample data used in this app. This
 includes creating the a javascript map with leaflet and adding a few controls. While these steps are not difficult,
-the focus of this exercise is intended to focus on the concept of managing raster files rather than leaflet and 
-javascript skills. 
+the focus of this exercise is intended to focus on the concept of managing raster files rather than leaflet and
+javascript skills.
 
 ```bash
 git clone https://github.com/rileyhales/multidimenstional_series_template
@@ -41,15 +42,15 @@ and navigate to this app which will be found at 127.0.0.1:8000/apps
 
 Some important features to note
 1. I have already created the map
-2. I have added controls for switching variables and viewing some additional layers from ESRI's Living Atlas. 
-These are easy to adapt for othe datasets and more complex data through standard html controls and including additional 
-javascript to read their values. 
+2. I have added controls for switching variables and viewing some additional layers from ESRI's Living Atlas.
+These are easy to adapt for othe datasets and more complex data through standard html controls and including additional
+javascript to read their values.
 3. There is no raster data visible on the map yet.
 
 ## Step 3: Get some raster data
 
 For the purposes of this demonstration, I have provided you a few sample netCDF files from NASA GESDISC. These are monthly
-average GLDAS files from Jan-Dec 2019. We will create a container for thredds and mount a directory on your computer. 
+average GLDAS files from Jan-Dec 2019. We will create a container for thredds and mount a directory on your computer.
 You can mount any directory however I suggest you do it as follows:
 
 ```bash
@@ -59,7 +60,7 @@ cd spatialdata
 mkdir thredds
 ```
 
-You should now have a folder created at `~/spatialdata` which contains a single folder named `thredds`. The path to 
+You should now have a folder created at `~/spatialdata` which contains a single folder named `thredds`. The path to
 this folder is `~/spatialdata/thredds`. Put the sample data in this directory. To be clear, your folder should look like this:
 
 ```bash
@@ -82,23 +83,25 @@ this folder is `~/spatialdata/thredds`. Put the sample data in this directory. T
 
 ## Step 5: THREDDS Data Server
 
-While several options are available for showing raster data on maps in web pages, the best free option for showing
-animations of raster data is the THREDDS Data Server. THREDDS is compatible with netCDF files that conform to the 
-Unidata Common Data Model which has been widely adopted (https://www.unidata.ucar.edu/software/netcdf-java/v4.6/CDM/index.html).
-Your data MUST be netcdf files conforming to this standard. Raster data of most formats can be quickly converted to netCDF. 
-If you want your data to be shown in animated maps, you will need to commit the time to making your data meet these 2 
-requirements (if it is not already in that format).
+While several options are available for showing raster data on maps in web pages, i believe the best choice for showing
+animations of raster data is the THREDDS Data Server. THREDDS is compatible with any multidimensional file that can be
+read by the Java netcdf library (so netcdf, grib, hd5), is open source, is actively developed and maintained by UCAR.
+The only qualifier is that thredds will only provide WMS and other services if your netCDF files conform to the UCAR
+Unidata Common Data Model (which has been widely adopted https://www.unidata.ucar.edu/software/netcdf-java/v4.6/CDM/index.html).
+Your data MUST conform to this standard so you will have to do a little bit of preprocessing work if it does not. If you
+need to convert your data, i strongly recommend working with netcdf files as opposed to hd5 or grib.
 
-We need to install THREDDS in order to view our raster data. We also need the THREDDS container to have access to the 
-`~/spatialdata/thredds` directory so we will mount that directory 
+We need to install THREDDS (as a container via docker) in order to view our raster data. The THREDDS server also needs
+to have access to the `~/spatialdata/thredds` directory (so we will mount that directory to the container)
 
 ```bash
 cd ~/spatialdata/thredds/
 docker run --name thredds -v $PWD:/usr/local/tomcat/content/thredds/public/ -d -p 7000:8080 unidata/thredds-docker:latest
 ```
-You can check on the docker container with `docker ps`. When the container is started, open a web page and go to 
-127.0.0.1:7000/thredds/catalog.html. The capabilities of the THREDDS server are managed by a few configuration XML 
-files which we will now modify.
+
+You can check on the docker container's status with `docker ps`. When the container is started, open a web page and go
+to 127.0.0.1:7000/thredds/catalog.html. Browse the contents and the sampel data provided by THREDDS. The capabilities
+of the THREDDS server are managed by a few configuration XML files which we will now modify.
 
 ```bash
 docker exec -it thredds bash
@@ -106,12 +109,123 @@ cd content/thredds/
 vi catalog.xml
 ```
 
-Uncomment out the lines for the 3 services at the top and modify the wildcard filters to include *
+1. Uncomment out the lines for the 3 services at the top
+2. Modify the wildcard filters to include *
+3. Modify the dataset scan root directory to content/
 
+When you are finished modifying the catalog it should look EXACTLY like this one.
+```xml
+<?xml version="1.0" encoding="UTF-8"?>
+<catalog name="THREDDS Server Default Catalog : You must change this to fit your server!"
+         xmlns="http://www.unidata.ucar.edu/namespaces/thredds/InvCatalog/v1.0"
+         xmlns:xlink="http://www.w3.org/1999/xlink"
+         xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+         xsi:schemaLocation="http://www.unidata.ucar.edu/namespaces/thredds/InvCatalog/v1.0
+           http://www.unidata.ucar.edu/schemas/thredds/InvCatalog.1.0.6.xsd">
+
+  <service name="all" base="" serviceType="compound">
+    <service name="odap" serviceType="OpenDAP" base="/thredds/dodsC/" />
+    <service name="dap4" serviceType="DAP4" base="/thredds/dap4/" />
+    <service name="http" serviceType="HTTPServer" base="/thredds/fileServer/" />
+    <service name="wcs" serviceType="WCS" base="/thredds/wcs/" />
+    <service name="wms" serviceType="WMS" base="/thredds/wms/" />
+    <service name="ncss" serviceType="NetcdfSubset" base="/thredds/ncss/" />
+  </service>
+
+  <service name="dap" base="" serviceType="compound">
+    <service name="odap" serviceType="OpenDAP" base="/thredds/dodsC/" />
+    <service name="dap4" serviceType="DAP4" base="/thredds/dap4/" />
+  </service>
+
+  <datasetScan name="Test all files in a directory" ID="testDatasetScan"
+               path="thredds-demo" location="content/">
+    <metadata inherited="true">
+      <serviceName>all</serviceName>
+      <dataType>Grid</dataType>
+    </metadata>
+
+    <filter>
+      <include wildcard="*"/>
+    </filter>
+  </datasetScan>
+
+  <catalogRef xlink:title="Test Enhanced Catalog" xlink:href="enhancedCatalog.xml" name=""/>
+</catalog>
+```
+
+If you have successfully modified the catalog.xml, you can exit the container and restart docker.
 ```bash
 docker restart thredds
-``` 
+```
 
 ## Step 5: Configure the tethys app to use THREDDS
 
+Add some custom settings to app.py
 
+```python
+# add this import statement at the top
+from tethys_sdk.app_settings import CustomSetting
+
+# add this code to the app class beneath the UrlMap section
+def custom_settings(self):
+    return (
+        CustomSetting(
+            name='thredds_path',
+            type=CustomSetting.TYPE_STRING,
+            description="Local file path to datasets (same as used by Thredds) (e.g. ~/spatialdata/thredds/)",
+            required=True,
+        ),
+        CustomSetting(
+            name='thredds_url',
+            type=CustomSetting.TYPE_STRING,
+            description="URL to the GLDAS folder served by THREDDS with trailing / (e.g. http://127.0.0.1:7000/thredds/)",
+            required=True,
+        )
+    )
+```
+
+restart the tethys server and fill in the custom settings
+
+## Step 6: Configure the list of variables
+
+Open one of the netCDF Files provided in Panoply. Notice how variable names have both a Long Name and a Short Name. The
+short name is used by the file to store and name data. The Long Name is the human readable and full name of which we
+want to display in the app as an option. I have already made a list of these names for you. We need to make them options
+for the user to switch between in the User Interface of the app. In controllers.py, update the code for the `SelectInput`
+gizmo called `variables` (tethys 'gizmos' are python shortcuts for creating html controls).
+
+```python
+all_gldas_variables = (
+    ('Air Temperature', 'Tair_f_inst'),
+    ('Canopy Water Amount', 'CanopInt_inst'),
+    ('Downward Heat Flux In Soil', 'Qg_tavg'),
+    ('Evaporation Flux From Canopy', 'ECanop_tavg'),
+    ('Evaporation Flux From Soil', 'ESoil_tavg'),
+    ('Potential Evaporation Flux', 'PotEvap_tavg'),
+    ('Precipitation Flux', 'Rainf_f_tavg'),
+    ('Rainfall Flux', 'Rainf_tavg'),
+    ('Root Zone Soil Moisture', 'RootMoist_inst'),
+    ('Snowfall Flux', 'Snowf_tavg'),
+    ('Soil Temperature', 'SoilTMP0_10cm_inst'),
+    ('Specific Humidity', 'Qair_f_inst'),
+    ('Subsurface Runoff Amount', 'Qsb_acc'),
+    ('Surface Air Pressure', 'Psurf_f_inst'),
+    ('Surface Albedo', 'Albedo_inst'),
+    ('Surface Downwelling Longwave Flux In Air', 'LWdown_f_tavg'),
+    ('Surface Downwelling Shortwave Flux In Air', 'SWdown_f_tavg'),
+    ('Surface Net Downward Longwave Flux', 'Lwnet_tavg'),
+    ('Surface Net Downward Shortwave Flux', 'Swnet_tavg'),
+    ('Surface Runoff Amount', 'Qs_acc'),
+    ('Surface Snow Amount', 'SWE_inst'),
+    ('Surface Snow Melt Amount', 'Qsm_acc'),
+    ('Surface Snow Thickness', 'SnowDepth_inst'),
+    ('Surface Temperature', 'AvgSurfT_inst'),
+    ('Surface Upward Latent Heat Flux', 'Qle_tavg'),
+    ('Surface Upward Sensible Heat Flux', 'Qh_tavg'),
+    ('Transpiration Flux From Veg', 'Tveg_tavg'),
+    ('Water Evaporation Flux', 'Evap_tavg'),
+    ('Wind Speed', 'Wind_f_inst'),
+)
+```
+
+When the tethys server restarts, open your app. Notice: there now are variables to choose from on the left menu.

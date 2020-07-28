@@ -1,4 +1,5 @@
 from tethys_sdk.base import TethysAppBase, url_map_maker
+from tethys_sdk.app_settings import CustomSetting
 
 
 class MultidimensionalSeriesTemplate(TethysAppBase):
@@ -29,4 +30,20 @@ class MultidimensionalSeriesTemplate(TethysAppBase):
                 url='multidimensional-series-template',
                 controller='multidimensional_series_template.controllers.home'
             ),
+        )
+
+    def custom_settings(self):
+        return (
+            CustomSetting(
+                name='thredds_path',
+                type=CustomSetting.TYPE_STRING,
+                description="Local file path to datasets (same as used by Thredds) (e.g. ~/spatialdata/thredds/)",
+                required=True,
+            ),
+            CustomSetting(
+                name='thredds_url',
+                type=CustomSetting.TYPE_STRING,
+                description="URL to the GLDAS folder on the thredds server with trailing / (e.g. http://127.0.0.1:7000/thredds/)",
+                required=True,
+            )
         )
