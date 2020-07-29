@@ -16,18 +16,17 @@ This app/workshop should demonstrate enough that you know how to go about creati
 4. Useful but not essential- install Panoply (https://www.giss.nasa.gov/tools/panoply/)
 5. Download the sample netcdf GLDAS files (links provided during training)
 6. View the google slides presentation explaining how the app works (links provided during training)
+7. If at any time you get stuck, you can compare your app's code to the solution which is on the master branch of this GitHub repo.
 
 ## Step 1: Clone this app and install
 
 I assume you have already created a tethys conda environment and have activated that environment.
 ```bash
-conda activate your_tethys_environment
+# for example, you need to run a command similar to this one
+conda activate your_tethys_environments_name
 ```
 
-I have done some initial programming work to provide a foundation for the sample data used in this app. This
-includes creating the a javascript map with leaflet and adding a few controls. While these steps are not difficult,
-the focus of this exercise is intended to focus on the concept of managing raster files rather than leaflet and
-javascript skills.
+I have done some initial programming work to provide a foundation for the sample data used in this app. This includes creating the a javascript map with leaflet and adding a few controls. While these steps are not difficult, the focus of this exercise is intended to focus on the concept of managing raster files rather than leaflet and javascript skills.
 
 ```bash
 git clone https://github.com/BYU-Hydroinformatics/multidimensional_series_template -b start
