@@ -317,3 +317,68 @@ def request_time_series(request):
     })
 ```
 
+## Step 8: Add javascript code to plot the results
+
+Javascript files are stored in the `public/js` directory of the app. There is a file in there named plotly.js which 
+contains all the custom functions used by the app to create graphs using plotly. Lets add a function to plot the series 
+extracted by the python controller you wrote.
+include this function in between the 
+
+```javascript
+function plotlyTimeseries(data) {
+    let variable = $("#variables option:selected").text();
+    let layout = {
+        title: 'Timeseries of ' + variable,
+        xaxis: {title: 'Time'},
+        yaxis: {title: 'Values'}
+    };
+
+    let values = {
+        x: data.x,
+        y: data.y,
+        mode: 'lines+markers',
+        type: 'scatter'
+    };
+    Plotly.newPlot('chart', [values], layout);
+    let chart = $("#chart");
+    chart.css('height', 500);
+    Plotly.Plots.resize(chart[0]);
+}
+```
+
+## Step 9: Add javascript to save the plot as a csv
+
+Add another function to plotly.js to save the chart as a csv and a listener which calls that function when the user 
+pressed the button
+
+```javascript
+function chartToCSV() {
+    function zip(arrays) {
+        return arrays[0].map(function (_, i) {
+            return arrays.map(function (array) {
+                return array[i]
+            })
+        });
+    }
+    if (chartdata === null) {
+        alert('There is no data in the chart. Please plot some data first.');
+        return
+    }
+    let data = zip([chartdata.x, chartdata.y]);
+    let csv = "data:text/csv;charset=utf-8," + data.map(e => e.join(",")).join("\n");
+    let link = document.createElement('a');
+    link.setAttribute('href', encodeURI(csv));
+    link.setAttribute('target', '_blank');
+    link.setAttribute('download', 'extracted_time_series.csv');
+    document.body.appendChild(link);
+    link.click();
+    $("#a").remove()
+}
+
+// WHEN YOU CLICK ON THE DOWNLOAD BUTTON- RUN THE DOWNLOAD CSV FUNCTION
+$("#chartCSV").click(function () {chartToCSV()});
+```  
+
+
+
+
