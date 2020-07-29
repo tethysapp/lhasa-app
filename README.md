@@ -240,7 +240,7 @@ the app already contains the javascript you need to make the request for a times
 uses JQuery and is found in the main.js file. I have also included the code to create the plots of these timeseries in 
 javascript. We need to provide the python code.
 
-Modify app.py
+### Modify app.py
 
 We need to create a new url which the user can use to request the time series. In tethys, this is called a 'UrlMap' and 
 is done in app.py. Beginning on line 21, modify your url_maps function to match this code. It creates a new url within 
@@ -267,7 +267,18 @@ def url_maps(self):
     )
 ``` 
 
-Create the python controller
+### Modify home.html
+In `home.html` on line about 100, there is a `<script>` tag where you can pass custom javascript to the user. We want 
+this url to be accessible as a javascript variable so we need to create a new variable. Make it look like this:
+
+```html
+  <script>
+    let threddsbase = "{{ thredds_url }}";
+    let URL_requestTimeSeries = "{% url 'multidimensional_series_template:request_time_series' %}";
+  </script>
+``` 
+
+### Create the python controller
 
 in controllers.py, add a new function at the bottom of the file. This function name must be called request_time_series 
 because that is the name we specified for this function in UrlMap in app.py.

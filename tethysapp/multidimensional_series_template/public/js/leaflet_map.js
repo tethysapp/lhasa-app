@@ -91,8 +91,7 @@ function regionsESRI() {
         outSR: 4326,
         where: where,
         onEachFeature: function (feature, layer) {
-            let place = feature.properties.REGION;
-            layer.bindPopup('<a class="btn btn-default" role="button" onclick="getShapeChart(' + "'esri-" + place + "'" + ')">Get timeseries for ' + place + '</a>');
+            layer.bindPopup('<a class="btn btn-default" role="button">' + feature.properties.REGION + '</a>');
         },
     };
     if (region !== '') {params['where'] = "REGION = '" + region + "'"}
@@ -112,7 +111,7 @@ function countriesESRI() {
         outSR: 4326,
         where: where,
         onEachFeature: function (feature, layer) {
-            layer.bindPopup('<a class="btn btn-default" role="button" onclick="getShapeChart(' + "'esri-" + region + "'" + ')">Get timeseries for ' + region + '</a>');
+            layer.bindPopup('<a class="btn btn-default" role="button">' + region + '</a>');
         },
     };
     let layer = L.esri.featureLayer(params);
