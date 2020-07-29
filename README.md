@@ -188,7 +188,19 @@ def custom_settings(self):
     )
 ```
 
-restart the tethys server and fill in the custom settings
+The url that you just specified needs to be accessible to the javascript so that the user's computer knows where to get the mapping service images. To do that, we can modify the controller for the app's main page and the html template. At the bottom of the controller called home in controllers.py, there is a context dictionary. Add this code to the bottom where the comment indicates to replace it:
+
+```python
+    'thredds_url': App.get_custom_setting('thredds_url'),
+```
+
+Open the base.html template. on line 101, there is a script tag where we can pass the context to the javascript by storing it as a variable. Add this code on line 101 where the comments indicate:
+
+```javascript
+let threddsbase = "{{ thredds_url }}";
+```
+
+Restart the tethys server and fill in the custom settings. you will need to refresh your web app page as well.
 
 ## Step 6: Configure the list of variables
 
