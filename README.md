@@ -12,7 +12,8 @@ This is a tethys app for demonstrating the steps you need to program in order to
 2. You need to have installed tethys via and activated the tethys environment in your bash shell (http://docs.tethysplatform.org/en/stable/installation.html)
 3. You need access to the Docker CLI (https://docs.docker.com/desktop/). Preferably, you have pulled the image for THREDDS Data server to save time later (`docker pull unidata/thredds-docker:latest`)
 4. Useful but not essential- install Panoply (https://www.giss.nasa.gov/tools/panoply/)
-5. Download the sample netcdf GLDAS files I have provided you
+5. Download the sample netcdf GLDAS files (links provided during training)
+6. View the google slides presentation explaining how the app works (links provided during training)
 
 ## Step 1: Clone this app and install
 
