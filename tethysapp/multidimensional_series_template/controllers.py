@@ -1,3 +1,8 @@
+import glob
+import os
+
+import geomatics
+from django.http import JsonResponse
 from django.shortcuts import render
 from tethys_sdk.gizmos import SelectInput, RangeSlider
 from tethys_sdk.permissions import login_required
@@ -182,3 +187,47 @@ def home(request):
     }
 
     return render(request, 'multidimensional_series_template/home.html', context)
+
+
+def request_time_series(request):
+    # all the parameters sent by the user via javascript are in request.GET (compare with plotly.js)
+    # print(request.GET)
+    loc_type = request.GET.get('loc_type')
+    variable = request.GET.get('variable')
+    coords = request.GET.getlist('coords[]')
+
+    # get a list of all the GLDAS files we put in the thredds directory via the custom setting
+    path = App.get_custom_setting('thredds_path')
+    list_of_files = sorted(glob.glob(os.path.join(path, '*.nc4')))
+
+    # get the time series for the location the user chose
+    # these functions return pandas dataframes with an index, datetime column, and columns of extracted values
+    if loc_type == 'Point':
+        time_series = geomatics.timeseries.point(
+            files=list_of_files,
+            var=variable,
+            coords=(float(coords[0]), float(coords[1]),),
+            dims=('lon', 'lat'),
+            t_dim='time',
+        )
+    else:  # the other option was a bounding box
+        time_series = geomatics.timeseries.bounding_box(
+            files=list_of_files,
+            var=variable,
+            min_coords=(float(coords[0]), float(coords[1]),),
+            max_coords=(float(coords[2]), float(coords[3]),),
+            dims=('lon', 'lat'),
+            t_dim='time',
+        )
+
+    # we need to build our own list of dates because the GLDAS netcdf files do not store their dates in typical
+    # formats which can be automatically parsed by the python packages used to read the files. We can convert the
+    # datetime values we got to their proper format using datetime and dateutil. Since there are only 12 dates and to
+    # keep things simple for a workshop, I will just manually type the list of dates
+    time_series['datetime'] = ['2019-01-01', '2019-02-01', '2019-03-01', '2019-04-01', '2019-05-01', '2019-06-01',
+                               '2019-07-01', '2019-08-01', '2019-09-01', '2019-10-01', '2019-11-01', '2019-12-01', ]
+
+    return JsonResponse({
+        'x': time_series['datetime'].values.tolist(),
+        'y': time_series['values'].values.tolist()
+    })

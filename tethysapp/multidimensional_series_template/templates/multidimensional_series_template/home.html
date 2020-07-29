@@ -99,7 +99,7 @@
   {{ block.super }}
   <script>
       let threddsbase = "{{ thredds_url }}";
-      let app = "{{ app }}";
+      let URL_requestTimeSeries = "{% url 'multidimensional_series_template:request_time_series' %}";
   </script>
 
   <!-- Allows csrf verification with AJAX -->

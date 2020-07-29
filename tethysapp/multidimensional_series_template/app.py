@@ -30,6 +30,11 @@ class MultidimensionalSeriesTemplate(TethysAppBase):
                 url='multidimensional-series-template',
                 controller='multidimensional_series_template.controllers.home'
             ),
+            UrlMap(
+                name='request_time_series',
+                url='multidimensional-series-template/request_time_series',
+                controller='multidimensional_series_template.controllers.request_time_series'
+            ),
         )
 
     def custom_settings(self):
@@ -37,13 +42,17 @@ class MultidimensionalSeriesTemplate(TethysAppBase):
             CustomSetting(
                 name='thredds_path',
                 type=CustomSetting.TYPE_STRING,
-                description="Local file path to datasets (same as used by Thredds) (e.g. ~/spatialdata/thredds/)",
+                description="Local file path to datasets (same as used by Thredds) "
+                            "(e.g.~/spatialdata/thredds/timeseries-workshop)",
                 required=True,
+                # default='~/spatialdata/thredds/timeseries-workshop'
             ),
             CustomSetting(
                 name='thredds_url',
                 type=CustomSetting.TYPE_STRING,
-                description="URL to the GLDAS folder on the thredds server with trailing / (e.g. http://127.0.0.1:7000/thredds/)",
+                description="URL to the GLDAS folder on the thredds server with trailing / "
+                            "(e.g. http://127.0.0.1:7000/thredds/)",
                 required=True,
+                default='http://127.0.0.1:7000/thredds/wms/thredds-demo/timeseries-workshop/',
             )
         )
