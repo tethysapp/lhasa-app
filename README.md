@@ -4,6 +4,8 @@ This is a tethys app for demonstrating the steps you need to program in order to
 1. Show animated maps of raster data via open source tools (THREDDS Data Server)
 2. Extract time series of values from the multidimensional raster files in a web app environment
 
+This app/workshop should demonstrate enough that you know how to go about creating a web app for this kind of data. It would take many hours and many workshops to teach all the skills necessary, but you should at least understand the process and know what kinds of things you will need to research further.
+
 © Riley Hales, 2020. Developed at the BYU Hydroinformatics Lab for a SERVIR Hackathon event August 2020
 
 ## Step 0: Prerequisites and Recommendations
@@ -28,7 +30,7 @@ the focus of this exercise is intended to focus on the concept of managing raste
 javascript skills.
 
 ```bash
-git clone https://github.com/rileyhales/multidimenstional_series_template -b start
+git clone https://github.com/BYU-Hydroinformatics/multidimensional_series_template -b start
 cd multidimensional_series_template
 tethys db start
 tethys install -d
