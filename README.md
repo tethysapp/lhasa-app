@@ -8,10 +8,10 @@ This is a tethys app for demonstrating the steps you need to program in order to
 
 ## Step 0: Prerequisites and Recommendations
 
-1. I would highly recommend you use an IDE (integrated development environment) for this exercise. PyCharm has a free version which is excellent.
+1. I would highly recommend you use an IDE (integrated development environment) for this exercise. PyCharm has a free version which is excellent but any decent IDE should work fine.
 2. You need to have installed tethys via and activated the tethys environment in your bash shell (http://docs.tethysplatform.org/en/stable/installation.html)
-3. You need access to the Docker CLI (https://docs.docker.com/desktop/). Preferably, you have pulled the image for THREDDS Data server (`docker pull unidata/thredds-docker:latest`)
-4. Highly recommend you have installed Panoply (https://www.giss.nasa.gov/tools/panoply/)
+3. You need access to the Docker CLI (https://docs.docker.com/desktop/). Preferably, you have pulled the image for THREDDS Data server to save time later (`docker pull unidata/thredds-docker:latest`)
+4. Useful but not essential- install Panoply (https://www.giss.nasa.gov/tools/panoply/)
 
 ## Step 1: Clone this app and install
 
@@ -26,7 +26,7 @@ the focus of this exercise is intended to focus on the concept of managing raste
 javascript skills.
 
 ```bash
-git clone https://github.com/rileyhales/multidimenstional_series_template
+git clone https://github.com/rileyhales/multidimenstional_series_template -b start
 cd multidimensional_series_template
 tethys db start
 tethys install -d
