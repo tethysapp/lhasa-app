@@ -61,27 +61,31 @@ cd ~
 mkdir spatialdata
 cd spatialdata
 mkdir thredds
+cd thredds
+mkdir timeseries-workshop
 ```
 
-You should now have a folder created at `~/spatialdata` which contains a single folder named `thredds`. The path to
-this folder is `~/spatialdata/thredds`. Put the sample data in this directory. To be clear, your folder should look like this:
+You should now have a folder created at `~/spatialdata` which contains a folder named `thredds` which contains a folder
+called timeseries-workshop. The path to this folder is `~/spatialdata/thredds/timeseries-workshop`. Put the sample data
+in this directory. To be clear, your folder should look like this:
 
 ```bash
 ~/spatialdata/
     thredds/
-        multidimensional_data_tutorial.ncml
-        GLDAS_NOAH025_M.A201901.021.nc4
-        GLDAS_NOAH025_M.A201902.021.nc4
-        GLDAS_NOAH025_M.A201903.021.nc4
-        GLDAS_NOAH025_M.A201904.021.nc4
-        GLDAS_NOAH025_M.A201905.021.nc4
-        GLDAS_NOAH025_M.A201906.021.nc4
-        GLDAS_NOAH025_M.A201907.021.nc4
-        GLDAS_NOAH025_M.A201908.021.nc4
-        GLDAS_NOAH025_M.A201909.021.nc4
-        GLDAS_NOAH025_M.A201910.021.nc4
-        GLDAS_NOAH025_M.A201911.021.nc4
-        GLDAS_NOAH025_M.A201912.021.nc4
+        timeseries-workshop/
+            multidimensional_data_tutorial.ncml
+            GLDAS_NOAH025_M.A201901.021.nc4
+            GLDAS_NOAH025_M.A201902.021.nc4
+            GLDAS_NOAH025_M.A201903.021.nc4
+            GLDAS_NOAH025_M.A201904.021.nc4
+            GLDAS_NOAH025_M.A201905.021.nc4
+            GLDAS_NOAH025_M.A201906.021.nc4
+            GLDAS_NOAH025_M.A201907.021.nc4
+            GLDAS_NOAH025_M.A201908.021.nc4
+            GLDAS_NOAH025_M.A201909.021.nc4
+            GLDAS_NOAH025_M.A201910.021.nc4
+            GLDAS_NOAH025_M.A201911.021.nc4
+            GLDAS_NOAH025_M.A201912.021.nc4
 ```
 
 ## Step 5: THREDDS Data Server
@@ -199,7 +203,21 @@ Open the base.html template. on line 101, there is a script tag where we can pas
 let threddsbase = "{{ thredds_url }}";
 ```
 
-Restart the tethys server and fill in the custom settings. you will need to refresh your web app page as well.
+Restart the tethys server (you will need to refresh your web app page as well) and fill in the custom settings. If you followed these directions exactly, the custom setting values will be as follows:
+
+1. The path to datasets will be the path to the folder we created `~/spatialdata/thredds/timeseries-workshop` but you will
+need to provide the full path (e.g. replace the ~ with the path to your home directory)
+2. The URL to the will be `http://127.0.0.1:7000/thredds/wms/thredds-demo/timeseries-workshop/`
+
+### notes on the url
+Thredds urls vary based on the folder you placed your data in, preferences written in the catalog.xml of thredds, and the kind of web service you are choosing. The easiest way to get the url is to use the graphic interface. In your browser, go to the thredds main page (127.0.0.1:7000/thredds/catalog.html) and then browse to the folder containing your data. Click on one of the files and choose the wms service option. You should be directed to a page with a url that looks like this:
+```
+http://127.0.0.1:7000/thredds/wms/thredds-demo/timeseries-workshop/multidimensional_data_tutorial.ncml?service=WMS&version=1.3.0&request=GetCapabilities
+```
+The correct url for all datasets in your directory will follow the pattern shown there. The javascript code provided to you is built to expect the url leading to that directory. That is, it will add the name of the file and build the proper query (the ? and everything after it). So from this long url, you would only want to keep this part (note that this url INCLUDES the / at the end):
+```
+http://127.0.0.1:7000/thredds/wms/thredds-demo/timeseries-workshop/
+```
 
 ## Step 6: Configure the list of variables
 
