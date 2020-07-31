@@ -98,8 +98,7 @@ Unidata Common Data Model (which has been widely adopted https://www.unidata.uca
 Your data MUST conform to this standard so you will have to do a little bit of preprocessing work if it does not. If you
 need to convert your data, i strongly recommend working with netcdf files as opposed to hd5 or grib.
 
-We need to install THREDDS (as a container via docker) in order to view our raster data. The THREDDS server also needs
-to have access to the `~/spatialdata/thredds` directory (so we will mount that directory to the container)
+We need to install THREDDS (as a container via docker) in order to view our raster data. The THREDDS server also needs to have access to the `~/spatialdata/thredds` directory (so we will mount that directory to the container).
 
 ```bash
 cd ~/spatialdata/thredds/
@@ -197,7 +196,7 @@ The url that you just specified needs to be accessible to the javascript so that
     'thredds_url': App.get_custom_setting('thredds_url'),
 ```
 
-Open the base.html template. on line 101, there is a script tag where we can pass the context to the javascript by storing it as a variable. Add this code on line 101 where the comments indicate:
+Open the `home.html` template. on line 101, there is a script tag where we can pass the context to the javascript by storing it as a variable. Add this code on line 101 where the comments indicate:
 
 ```javascript
 let threddsbase = "{{ thredds_url }}";
@@ -265,18 +264,18 @@ When the tethys server restarts, open your app. Notice: there now are variables 
 
 ## Step 7: Create python functions to extract the time series
 
-There are many ways to extract a timeseries from gridded dataset which vary based on the programming lanuage, files 
-format, and the kind of location/geometry for which to extract the series. I have created a python package which can 
-handle many of these cases and has been optimized for speed; something particularly important in web apps. This should 
-been installed when you installed the app. For the sake of simplicity in this workshop and given the time restraints, 
-the app already contains the javascript you need to make the request for a timeseries from the user side. That code 
-uses JQuery and is found in the main.js file. I have also included the code to create the plots of these timeseries in 
+There are many ways to extract a timeseries from gridded dataset which vary based on the programming lanuage, files
+format, and the kind of location/geometry for which to extract the series. I have created a python package which can
+handle many of these cases and has been optimized for speed; something particularly important in web apps. This should
+been installed when you installed the app. For the sake of simplicity in this workshop and given the time restraints,
+the app already contains the javascript you need to make the request for a timeseries from the user side. That code
+uses JQuery and is found in the main.js file. I have also included the code to create the plots of these timeseries in
 javascript. We need to provide the python code.
 
 ### Modify app.py
 
-We need to create a new url which the user can use to request the time series. In tethys, this is called a 'UrlMap' and 
-is done in app.py. Beginning on line 21, modify your url_maps function to match this code. It creates a new url within 
+We need to create a new url which the user can use to request the time series. In tethys, this is called a 'UrlMap' and
+is done in app.py. Beginning on line 21, modify your url_maps function to match this code. It creates a new url within
 the app called request_time_series.
 
 ```python
@@ -298,22 +297,22 @@ def url_maps(self):
             controller='multidimensional_series_template.controllers.request_time_series'
         ),
     )
-``` 
+```
 
 ### Modify home.html
-In `home.html` on line about 100, there is a `<script>` tag where you can pass custom javascript to the user. We want 
+In `home.html` on line about 100, there is a `<script>` tag where you can pass custom javascript to the user. We want
 this url to be accessible as a javascript variable so we need to create a new variable. Make it look like this:
 
 ```html
-  <script>
+<script>
     let threddsbase = "{{ thredds_url }}";
     let URL_requestTimeSeries = "{% url 'multidimensional_series_template:request_time_series' %}";
-  </script>
-``` 
+</script>
+```
 
 ### Create the python controller
 
-in controllers.py, add a new function at the bottom of the file. This function name must be called request_time_series 
+in controllers.py, add a new function at the bottom of the file. This function name must be called request_time_series
 because that is the name we specified for this function in UrlMap in app.py.
 
 ```python
@@ -363,10 +362,10 @@ def request_time_series(request):
 
 ## Step 8: Add javascript code to plot the results
 
-Javascript files are stored in the `public/js` directory of the app. There is a file in there named plotly.js which 
-contains all the custom functions used by the app to create graphs using plotly. Lets add a function to plot the series 
+Javascript files are stored in the `public/js` directory of the app. There is a file in there named plotly.js which
+contains all the custom functions used by the app to create graphs using plotly. Lets add a function to plot the series
 extracted by the python controller you wrote.
-include this function in between the 
+include this function in between the
 
 ```javascript
 function plotlyTimeseries(data) {
@@ -392,7 +391,7 @@ function plotlyTimeseries(data) {
 
 ## Step 9: Add javascript to save the plot as a csv
 
-Add another function to plotly.js to save the chart as a csv and a listener which calls that function when the user 
+Add another function to plotly.js to save the chart as a csv and a listener which calls that function when the user
 pressed the button
 
 ```javascript
@@ -421,8 +420,4 @@ function chartToCSV() {
 
 // WHEN YOU CLICK ON THE DOWNLOAD BUTTON- RUN THE DOWNLOAD CSV FUNCTION
 $("#chartCSV").click(function () {chartToCSV()});
-```  
-
-
-
-
+```
