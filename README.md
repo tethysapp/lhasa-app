@@ -102,7 +102,10 @@ We need to install THREDDS (as a container via docker) in order to view our rast
 
 ```bash
 cd ~/spatialdata/thredds/
+# on mac/linux, you want to run this command
 docker run --name thredds -v $PWD:/usr/local/tomcat/content/thredds/public/ -d -p 7000:8080 unidata/thredds-docker:latest
+# on windows, run this slightly modified command
+docker run --name thredds -v pwd:/usr/local/tomcat/content/thredds/public/ -d -p 7000:8080 unidata/thredds-docker:latest
 ```
 
 You can check on the docker container's status with `docker ps`. When the container is started, open a web page and go
@@ -164,7 +167,7 @@ If you have successfully modified the catalog.xml, you can exit the container an
 docker restart thredds
 ```
 
-## Step 5: Configure the tethys app to use THREDDS
+## Step 6: Configure the tethys app to use THREDDS
 
 Add some custom settings to app.py
 
@@ -218,7 +221,7 @@ The correct url for all datasets in your directory will follow the pattern shown
 http://127.0.0.1:7000/thredds/wms/thredds-demo/timeseries-workshop/
 ```
 
-## Step 6: Configure the list of variables
+## Step 7: Configure the list of variables
 
 Open one of the netCDF Files provided in Panoply. Notice how variable names have both a Long Name and a Short Name. The
 short name is used by the file to store and name data. The Long Name is the human readable and full name of which we
@@ -262,7 +265,7 @@ all_gldas_variables = (
 
 When the tethys server restarts, open your app. Notice: there now are variables to choose from on the left menu.
 
-## Step 7: Create python functions to extract the time series
+## Step 8: Create python functions to extract the time series
 
 There are many ways to extract a timeseries from gridded dataset which vary based on the programming lanuage, files
 format, and the kind of location/geometry for which to extract the series. I have created a python package which can
@@ -360,7 +363,7 @@ def request_time_series(request):
     })
 ```
 
-## Step 8: Add javascript code to plot the results
+## Step 9: Add javascript code to plot the results
 
 Javascript files are stored in the `public/js` directory of the app. There is a file in there named plotly.js which
 contains all the custom functions used by the app to create graphs using plotly. Lets add a function to plot the series
@@ -389,7 +392,7 @@ function plotlyTimeseries(data) {
 }
 ```
 
-## Step 9: Add javascript to save the plot as a csv
+## Step 10: Add javascript to save the plot as a csv
 
 Add another function to plotly.js to save the chart as a csv and a listener which calls that function when the user
 pressed the button
