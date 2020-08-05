@@ -21,28 +21,34 @@ function getDrawnChart(drawnItems) {
 
     console.log("Coordinates", coords)
 
-    // setup a parameters json to generate the right timeserie
-    let data = {
-        coords: coords,
-        variable: variable,
-        loc_type: loc_type
-    }
+    // We need to build a request to the api service
+
+    // let data = {
+    //     q:"precip_3hr",
+    //     lat:"",
+    //     lon:"",
+    //     startTime:$("#startTime").val(),
+    //     endTime: ""
+    // }
 
     $("#chart_modal").modal("show")
     // decide which ajax url you need based on drawing type
+    // ?q=precip_3hr&lat=42.94334&lon=12.3939393&limit=2&startTime=2020-01-01&endTime=2020-08-01
+
     $.ajax({
-        url: URL_requestTimeSeries,
+        url: "https://pmmpublisher.pps.eosdis.nasa.gov/opensearch",
         data: data,
         dataType: "json",
         contentType: "application/json",
         method: "GET",
         success: function(result) {
+            console.log(result)
             // clear the loading gif
             $("#chart").html("")
             // save the data sent back by python to a global variable we can use later
             chartdata = result
             // call the function to create a plotly graph of the data
-            plotlyTimeseries(chartdata)
+            // plotlyTimeseries(chartdata)
         }
     })
 }
