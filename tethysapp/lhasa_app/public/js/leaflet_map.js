@@ -34,15 +34,6 @@ function basemaps() {
         "ESRI Imagery (Labeled)": L.layerGroup([esri_imagery, esri_labels]),
         "ESRI Terrain": L.layerGroup([esri_terrain, esri_labels])
     }
-
-    //     var url = 'https://sampleserver3.arcgisonline.com/ArcGIS/rest/services/World/MODIS/ImageServer';
-
-    // L.esri.imageMapLayer({
-    //   url: url,
-    //   opacity: 0.25,
-    //   // only necessary for old versions of ArcGIS Server
-    //   useCors: false
-    // }).addTo(map);
 }
 
 ////////////////////////////////////////////////////////////////////////  GLDAS LAYERS
@@ -191,9 +182,9 @@ latlon.onAdd = function() {
 function makeControls() {
     return L.control
         .layers(basemapObj, {
-            "Earth Observation": layerWMS,
             "Drawing on Map": drawnItems,
-            "Region Boundaries": layerRegion
+            "Region Boundaries": layerRegion,
+            "Custom Layer": newLayer
         })
         .addTo(mapObj)
 }
