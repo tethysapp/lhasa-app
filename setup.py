@@ -2,7 +2,7 @@ from setuptools import setup, find_namespace_packages
 from tethys_apps.app_installation import find_resource_files
 
 # -- Apps Definition -- #
-app_package = 'multidimensional_series_template'
+app_package = 'lhasa_app'
 release_package = 'tethysapp-' + app_package
 
 # -- Python Dependencies -- #
@@ -17,10 +17,10 @@ resource_files += find_resource_files('tethysapp/' + app_package + '/workspaces'
 setup(
     name=release_package,
     version='0.0.1',
-    description='An app demonstrating the steps needed to show time series raster data and to extract and plot series',
+    description='',
     long_description='',
     keywords='',
-    author='Riley Hales',
+    author='Anna, Tessa',
     author_email='',
     url='',
     license='',

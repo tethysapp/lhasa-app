@@ -7,7 +7,7 @@ from django.shortcuts import render
 from tethys_sdk.gizmos import SelectInput, RangeSlider
 from tethys_sdk.permissions import login_required
 
-from .app import MultidimensionalSeriesTemplate as App
+from .app import LhasaApp as App
 
 
 @login_required()
@@ -182,11 +182,10 @@ def home(request):
         'gjFlClr': gj_fillcolor,
         'gjFlOp': gj_fillopacity,
 
-        # metadata
-        'thredds_url': App.get_custom_setting('thredds_url'),
+
     }
 
-    return render(request, 'multidimensional_series_template/home.html', context)
+    return render(request, 'lhasa_app/home.html', context)
 
 
 def request_time_series(request):
@@ -197,7 +196,6 @@ def request_time_series(request):
     coords = request.GET.getlist('coords[]')
 
     # get a list of all the GLDAS files we put in the thredds directory via the custom setting
-    path = App.get_custom_setting('thredds_path')
     list_of_files = sorted(glob.glob(os.path.join(path, '*.nc4')))
 
     # get the time series for the location the user chose
