@@ -4,12 +4,12 @@ from tethys_sdk.app_settings import CustomSetting
 
 class LhasaApp(TethysAppBase):
     """
-    Tethys app class for Multidimensional Series Template.
+    Lhasa App Class
     """
 
     name = 'LHASA'
     index = 'lhasa_app:home'
-    icon = 'lhasa_app/images/icon.gif'
+    icon = 'lhasa_app/images/flaglogo.jpg'
     package = 'lhasa_app'
     root_url = 'lhasa-app'
     color = '#27ae60'
