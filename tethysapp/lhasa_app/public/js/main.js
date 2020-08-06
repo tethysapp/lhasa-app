@@ -12,12 +12,12 @@ $.ajaxSetup({
 })
 
 var url =
-    "https://sampleserver3.arcgisonline.com/ArcGIS/rest/services/World/MODIS/ImageServer"
+    "https://maps.disasters.nasa.gov/ags03/rest/services/GPM_NRT/GPM_NRT_3hr/ImageServer"
 
 var newLayer = L.esri
     .imageMapLayer({
         url: url,
-        opacity: 0.25,
+        opacity: 0.9,
         // only necessary for old versions of ArcGIS Server
         useCors: false
     })
