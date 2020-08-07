@@ -188,9 +188,9 @@ function makeControls() {
         "Region Boundaries": layerRegion
     }
 
-    // if (newLayer) {
-    //     layers["Custom Layer"] = newLayer
-    // }
+    if (newLayer) {
+        layers["Custom Layer"] = newLayer
+    }
 
     if (layerWMS) {
         layers["Animated Nowcast Layer"] = layerWMS

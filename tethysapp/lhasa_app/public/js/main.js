@@ -11,17 +11,17 @@ $.ajaxSetup({
     }
 })
 
-// var url =
-//     "https://sampleserver3.arcgisonline.com/ArcGIS/rest/services/World/MODIS/ImageServer"
+var url =
+    "https://maps.disasters.nasa.gov/ags03/rest/services/GPM_NRT/GPM_NRT_3hr/ImageServer"
 
-// var newLayer = L.esri
-//     .imageMapLayer({
-//         url: url,
-//         opacity: 0.25,
-//         // only necessary for old versions of ArcGIS Server
-//         useCors: false
-//     })
-//     .addTo(mapObj)
+var newLayer = L.esri
+    .imageMapLayer({
+        url: url,
+        opacity: 0.5,
+        // only necessary for old versions of ArcGIS Server
+        useCors: false
+    })
+    .addTo(mapObj)
 
 let layerWMS = newWMS() // adds the wms raster layer
 let layerRegion = regionsESRI() // adds the world region boundaries from esri living atlas
