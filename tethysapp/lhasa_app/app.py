@@ -13,8 +13,8 @@ class LhasaApp(TethysAppBase):
     package = 'lhasa_app'
     root_url = 'lhasa-app'
     color = '#27ae60'
-    description = 'An app demonstrating the steps to show timeseries raster data and extract timeseries files'
-    tags = '"time series", "raster", "GIS"'
+    description = 'An app demonstrating the nowcast for landslide susceptibility using precipitation data and terrain susceptibility'
+    tags = '"landslide", "nowcast", "NASA"'
     enable_feedback = False
     feedback_emails = []
 
