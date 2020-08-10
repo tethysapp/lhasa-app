@@ -17,20 +17,20 @@ var url =
 var newLayer = L.esri
     .imageMapLayer({
         url: url,
-        opacity: 0.9,
+        opacity: 0.5,
         // only necessary for old versions of ArcGIS Server
         useCors: false
     })
     .addTo(mapObj)
 
-// let layerWMS = newWMS() // adds the wms raster layer
+let layerWMS = newWMS() // adds the wms raster layer
 let layerRegion = regionsESRI() // adds the world region boundaries from esri living atlas
 let controlsObj = makeControls() // the layer toggle controls top-right corner
 legend.addTo(mapObj) // add the legend graphic to the map
 latlon.addTo(mapObj) // add the box showing lat and lon to the map
 ////////////////////////////////////////////////////////////////////////  EVENT LISTENERS
 function update() {
-    // layerWMS = newWMS()
+    layerWMS = newWMS()
     controlsObj = makeControls()
     legend.addTo(mapObj)
 }

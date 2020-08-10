@@ -38,8 +38,10 @@ function basemaps() {
 
 ////////////////////////////////////////////////////////////////////////  GLDAS LAYERS
 function newWMS() {
-    let layer = $("#variables").val()
-    let wmsurl = threddsbase + "multidimensional_data_tutorial.ncml"
+    let layer = `nowcast_val`
+
+    let wmsurl = `https://tethys-staging.byu.edu/thredds/wms/data/lhasa/main.ncml`
+    // let wmsurl = threddsbase + "multidimensional_data_tutorial.ncml"
     let cs_rng = bounds[layer]
     if ($("#use_csrange").is(":checked")) {
         cs_rng = String($("#cs_min").val()) + "," + String($("#cs_max").val())
@@ -55,7 +57,7 @@ function newWMS() {
         opacity: $("#opacity_raster").val(),
         BGCOLOR: "0x000000",
         styles: "boxfill/" + $("#colorscheme").val(),
-        colorscalerange: cs_rng
+        colorscalerange: `0,2`
     })
 
     return L.timeDimension.layer
@@ -149,9 +151,10 @@ function countriesESRI() {
 ////////////////////////////////////////////////////////////////////////  LEGEND AND LATLON CONTROLS
 let legend = L.control({ position: "bottomright" })
 legend.onAdd = function() {
-    let layer = $("#variables").val()
-    let wmsurl = threddsbase + "multidimensional_data_tutorial.ncml"
-    let cs_rng = bounds[layer]
+    let layer = `nowcast_val`
+    let wmsurl = `https://tethys-staging.byu.edu/thredds/wms/data/lhasa/main.ncml`
+
+    let cs_rng = `0,2`
     if ($("#use_csrange").is(":checked")) {
         cs_rng = String($("#cs_min").val()) + "," + String($("#cs_max").val())
     }
@@ -180,13 +183,19 @@ latlon.onAdd = function() {
 ////////////////////////////////////////////////////////////////////////  MAP CONTROLS AND CLEARING
 // the layers box on the top right of the map
 function makeControls() {
-    return L.control
-        .layers(basemapObj, {
-            "Drawing on Map": drawnItems,
-            "Region Boundaries": layerRegion,
-            "Custom Layer": newLayer
-        })
-        .addTo(mapObj)
+    let layers = {
+        "Drawing on Map": drawnItems,
+        "Region Boundaries": layerRegion
+    }
+
+    if (newLayer) {
+        layers["Custom Layer"] = newLayer
+    }
+
+    if (layerWMS) {
+        layers["Animated Nowcast Layer"] = layerWMS
+    }
+    return L.control.layers(basemapObj, layers).addTo(mapObj)
 }
 // you need to remove layers when you make changes so duplicates dont persist and accumulate
 function clearMap() {
