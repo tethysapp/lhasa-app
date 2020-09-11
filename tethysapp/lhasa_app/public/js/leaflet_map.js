@@ -99,7 +99,7 @@ function regionsESRI() {
     }
     let params = {
         url:
-            "https://services.arcgis.com/P3ePLMYs2RVChkJx/ArcGIS/rest/services/World_Regions/FeatureServer/0",
+            "https://services.arcgis.com/P3ePLMYs2RVChkJx/arcgis/rest/services/BRA_Boundaries_2018/FeatureServer",
         style: getStyle,
         outSR: 4326,
         where: where,
