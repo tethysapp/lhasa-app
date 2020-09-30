@@ -26,14 +26,26 @@ var newLayer = L.esri
 let layerWMS = newWMS() // adds the wms raster layer
 let layerRegion = regionsESRI() // adds the world region boundaries from esri living atlas
 let controlsObj = makeControls() // the layer toggle controls top-right corner
+let LayerState = statesESRI()
 legend.addTo(mapObj) // add the legend graphic to the map
 latlon.addTo(mapObj) // add the box showing lat and lon to the map
+
 ////////////////////////////////////////////////////////////////////////  EVENT LISTENERS
 function update() {
     layerWMS = newWMS()
     controlsObj = makeControls()
     legend.addTo(mapObj)
 }
+function changestates(selection) {
+    let stateJQ = $("#states")
+    let state = statJQ.val()
+    mapObj.removeLayer(layerState)
+    controlsObj.removeLayer(layerState)
+    if (selection === "state") {
+        layerState = statesESRI()
+        controlsObj.addOverlay(layerState, "State Boundaries")
+    }
+ }
 function changeregions(firedfrom) {
     let countryJQ = $("#countries")
     let regionJQ = $("#regions")
@@ -84,6 +96,9 @@ $("#charttype").change(function() {
 })
 $("#regions").change(function() {
     changeregions("region")
+})
+$("#states").change(function() {
+    changestates("state")
 })
 $("#countriesGO").click(function() {
     changeregions("country")
