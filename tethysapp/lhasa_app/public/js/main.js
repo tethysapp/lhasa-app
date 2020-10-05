@@ -36,7 +36,7 @@ function update() {
     controlsObj = makeControls()
     legend.addTo(mapObj)
 }
-function changestates(selection) {
+/*function changestates(selection) {
     let stateJQ = $("#states")
     let state = statJQ.val()
     mapObj.removeLayer(layerState)
@@ -45,7 +45,27 @@ function changestates(selection) {
         layerState = statesESRI()
         controlsObj.addOverlay(layerState, "State Boundaries")
     }
- }
+ }*/
+ function changestates(selection) {
+    let countryJQ = $("#countries")
+    let stateJQ = $("#states")
+    if (firedfrom === "country") {
+        let country = countryJQ.val()
+        regionJQ.val("none")
+     }   else {
+        countryJQ.val("")
+    }
+    // change to none/empty input
+    mapObj.removeLayer(layerstate)
+    controlsObj.removeLayer(layerstate)
+    if (firedfrom === "state") {
+        layerState = statesESRI()
+        controlsObj.addOverlay(layerState, "State Boundaries")
+    } else {
+        layerRegion = countriesESRI()
+        controlsObj.addOverlay(layerRegion, "Country Boundaries")
+    }
+}
 function changeregions(firedfrom) {
     let countryJQ = $("#countries")
     let regionJQ = $("#regions")

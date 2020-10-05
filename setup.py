@@ -20,7 +20,7 @@ setup(
     description='',
     long_description='',
     keywords='',
-    author='Anna, Tessa',
+    author='Anna, Tessa', 'Rohit'
     author_email='',
     url='',
     license='',

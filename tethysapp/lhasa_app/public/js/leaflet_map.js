@@ -6,7 +6,7 @@ function map() {
         minZoom: 2,
         zoomSnap: 0.5,
         boxZoom: true,
-        maxBounds: L.latLngBounds(L.latLng(-100.0, -270.0), L.latLng(100.0, 270.0)),
+        maxBounds: L.latLngBounds(L.latLng(-32.741475, -86.544146), L.latLng(6.395598, -22.931077)),
         center: [0, 0],
         timeDimension: true,
         timeDimensionControl: true,
@@ -90,6 +90,7 @@ function styleGeoJSON() {
 }
 
 ////////////////////////////////////////////////////////////////////////  ESRI LIVING ATLAS LAYERS (FEATURE SERVER)
+
 function regionsESRI() {
     let region = $("#regions").val()
 
@@ -136,6 +137,39 @@ function countriesESRI() {
         onEachFeature: function(feature, layer) {
             layer.bindPopup('<a class="btn btn-default" role="button">' + region + "</a>")
         }
+    }
+    let layer = L.esri.featureLayer(params)
+    layer.addTo(mapObj)
+    layer
+        .query()
+        .where(where)
+        .bounds(function(error, latLngBounds, response) {
+            mapObj.flyToBounds(latLngBounds)
+        })
+    return layer
+}
+function statesESRI() {
+    let region = $("#states").val()
+    let where = "1=1"
+    if (state !== "") {
+        where = "STATE = '" + state + "'"
+    }
+    let params = {
+        url:
+            "https://services.arcgis.com/ULBqC49IEeIR01GF/arcgis/rest/services/BrazilStates_2005/FeatureServer",
+        style: getStyle,
+        outSR: 4326,
+        where: where,
+        onEachFeature: function(feature, layer) {
+            layer.bindPopup(
+                '<a class="btn btn-default" role="button">' +
+                    feature.properties.STATE +
+                    "</a>"
+            )
+        }
+    }
+   if (state !== "") {
+        params["where"] = "STATE = '" + state + "'"
     }
     let layer = L.esri.featureLayer(params)
     layer.addTo(mapObj)
