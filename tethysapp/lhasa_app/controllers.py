@@ -38,7 +38,41 @@ def home(request):
                  ('Global Landslide Nowcast', 'PotEvap_tavg'),
                  ('Global Landslide Nowcast updated every 3 hours', 'Rainf_f_tavg')),
     )
-
+    states = SelectInput(
+        display_text='Pick A State (ESRI Living Atlas)',
+        name='states',
+        multiple=False,
+        original=True,
+        options=(('Brasil', ''),
+                 ('Acre', 'Acre'),
+                 ('Alagoas', 'Alagoas'),
+                 ('Amapa', 'Amapa'),
+                 ('Amazonas', 'Amazonas'),
+                 ('Bahia', 'Bahia'),
+                 ('Ceara', 'Ceara'),
+                 ('Distrito Federal', 'Distrito Federal'),
+                 ('Espirito Santo', 'Espirito Santo'),
+                 ('Goias', 'Goias'),
+                 ('Maranhao', 'Maranhao'),
+                 ('Mato Grosso', 'Mato Grosso'),
+                 ('Mato Grosso do Sul', 'Mato Grosso do Sul'),
+                 ('Minas Gerais', 'Minas Gerais'),
+                 ('Para', 'Para'),
+                 ('Paraiba', 'Paraiba'),
+                 ('Parana', 'Parana'),
+                 ('Pernambuco', 'Pernambuco'),
+                 ('Piaui', 'Piaui'),
+                 ('Rio de Janeiro', 'Rio de Janeiro'),
+                 ('Rio Grande do Norte', 'Rio Grande do Norte'),
+                 ('Rio Grande do Sul', 'Rio Grande do Sul'),
+                 ('Rodonia', 'Rodonia'),
+                 ('Roraima', 'Roraima'),
+                 ('Santa Catarina', 'Santa Catarina'),
+                 ('Sao Paulo', 'Sao Paulo'),
+                 ('Sergipe', 'Sergipe'),
+                 ('Toncantins', 'Toncantins'),
+                 ('None', 'none'),)
+    )
     regions = SelectInput(
         display_text='Pick A World Region (ESRI Living Atlas)',
         name='regions',
@@ -46,7 +80,7 @@ def home(request):
         original=True,
         options=(('Brasil', ''),
                  ('Acre', 'Acre'),
-                 ('Alagoas', 'Asiatic Russia'),
+                 ('Alagoas', 'Alagoas'),
                  ('Amapa', 'Australia/New Zealand'),
                  ('Amazonas', 'Amazonas'),
                  ('Bahia', 'Central America'),
@@ -151,7 +185,7 @@ def home(request):
         # data options
         'variables': variables,
         'regions': regions,
-
+        'states': states,
         # display options
         'colorscheme': colorscheme,
         'opacity': opacity,

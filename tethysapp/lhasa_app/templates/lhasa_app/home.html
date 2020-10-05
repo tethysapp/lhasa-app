@@ -12,14 +12,14 @@
     {% gizmo select_input variables %}
 
   <li class="title">ESRI Boundary Data</li>
-    {% gizmo select_input regions %}
-  <div id="country-name-gizmo">
-    <label for="countries">Enter A Country Name</label>
+    {% gizmo select_input states %}
+  <div id="state-name-gizmo">
+    <!--<label for="states">Enter A State</label>
     <div style="width: 80%; float: left">
-      <input id="countries" list="countrieslist" class="form-control">
+      <input id="states" list="stateslist" class="form-control">
     </div>
-    <button class="btn btn-success" role="button" id="countriesGO" style="width: 20%; float: left">Go!</button>
-  </div>
+    <button class="btn btn-success" role="button" id="statesGO" style="width: 20%; float: left">Go!</button>
+  </div> -->
 
   <li class="title">Map Styling Controls</li>
   <div style="text-align: center; padding-bottom: 12px">
@@ -115,7 +115,7 @@
   <!-- script for leaflet -->
   <script type="text/javascript" src="https://unpkg.com/leaflet@1.6.0/dist/leaflet.js"></script>
 
-  <!-- Leadlet with Esri -->
+  <!-- Leaflet with Esri -->
   <script src="https://unpkg.com/esri-leaflet@2.2.3/dist/esri-leaflet.js"
           integrity="sha512-YZ6b5bXRVwipfqul5krehD9qlbJzc6KOGXYsDjU9HHXW2gK57xmWl2gU6nAegiErAqFXhygKIsWPKbjLPXVb2g=="
           crossorigin=""></script>
@@ -132,6 +132,7 @@
   <!-- Data Tools -->
   <script src="{% static 'lhasa_app/js/bounds.js' %}" type="text/javascript"></script>
   <script src="{% static 'lhasa_app/js/countries.js' %}" type="text/javascript"></script>
+  <script src="{% static 'lhasa_app/js/states.js' %}" type="text/javascript"></script>
   <!-- chart and map management scripts -->
   <script src="{% static 'lhasa_app/js/plotly.js' %}" type="text/javascript"></script>
   <script src="{% static 'lhasa_app/js/leaflet_map.js' %}" type="text/javascript"></script>
