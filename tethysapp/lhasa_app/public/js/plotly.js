@@ -3,7 +3,7 @@ let chartdata = null
 function getDrawnChart(drawnItems) {
     // if there's nothing to get charts for then quit
     let geojson = drawnItems.toGeoJSON()["features"]
-    if (geojson.length === 0 && chosenRegion === "") {
+    if (geojson.length === 0 && chosenRtate === "") {
         return
     }
 

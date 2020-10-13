@@ -17,36 +17,48 @@ var url =
 var newLayer = L.esri
     .imageMapLayer({
         url: url,
-        opacity: 0.5,
+        opacity: 0
         // only necessary for old versions of ArcGIS Server
         useCors: false
     })
     .addTo(mapObj)
 
+var url =
+    "https://services.arcgis.com/ULBqC49IEeIR01GF/arcgis/rest/services/BrazilStates_2005/FeatureServer"
+
+var stateLayer = L.esri
+    .imageMapLayer({
+        url: url
+        opacity: 0
+        useCors: false
+    })
+    .addTo(mapObj)
+
 let layerWMS = newWMS() // adds the wms raster layer
+let stateLayer = statesESRI() //adds the state boundaries of Brazil from esri living atlas
 let layerRegion = regionsESRI() // adds the world region boundaries from esri living atlas
 let controlsObj = makeControls() // the layer toggle controls top-right corner
-let LayerState = statesESRI()
 legend.addTo(mapObj) // add the legend graphic to the map
 latlon.addTo(mapObj) // add the box showing lat and lon to the map
 
 ////////////////////////////////////////////////////////////////////////  EVENT LISTENERS
 function update() {
     layerWMS = newWMS()
+    stateLayer = statesESRI()
     controlsObj = makeControls()
     legend.addTo(mapObj)
 }
 /*function changestates(selection) {
     let stateJQ = $("#states")
     let state = statJQ.val()
-    mapObj.removeLayer(layerState)
-    controlsObj.removeLayer(layerState)
+    mapObj.removeLayer(stateLayer)
+    controlsObj.removeLayer(stateLayer)
     if (selection === "state") {
-        layerState = statesESRI()
-        controlsObj.addOverlay(layerState, "State Boundaries")
+        stateLayer = statesESRI()
+        controlsObj.addOverlay(stateLayer, "State Boundaries")
     }
  }*/
- function changestates(selection) {
+ function changestates(firedfrom) {
     let countryJQ = $("#countries")
     let stateJQ = $("#states")
     if (firedfrom === "country") {
@@ -56,15 +68,15 @@ function update() {
         countryJQ.val("")
     }
     // change to none/empty input
-    mapObj.removeLayer(layerstate)
-    controlsObj.removeLayer(layerstate)
+    mapObj.removeLayer(stateLayer)
+    controlsObj.removeLayer(stateLayer)
     if (firedfrom === "state") {
-        layerState = statesESRI()
-        controlsObj.addOverlay(layerState, "State Boundaries")
-    } else {
+        stateLayer = statesESRI()
+        controlsObj.addOverlay(stateLayer, "State Boundaries")
+    } /*else {
         layerRegion = countriesESRI()
         controlsObj.addOverlay(layerRegion, "Country Boundaries")
-    }
+    }*/
 }
 function changeregions(firedfrom) {
     let countryJQ = $("#countries")
@@ -118,6 +130,7 @@ $("#regions").change(function() {
     changeregions("region")
 })
 $("#states").change(function() {
+    clearMap()
     changestates("state")
 })
 $("#countriesGO").click(function() {

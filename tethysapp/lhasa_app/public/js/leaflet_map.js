@@ -73,6 +73,7 @@ function newWMS() {
 
 ////////////////////////////////////////////////////////////////////////  GEOJSON STYLING CONTROLS
 let chosenRegion = "" // tracks which region is on the chart for updates not caused by the user picking a new region
+let chosenState = ""
 getStyle = function() {
     return {
         color: $("#gjClr").val(),
@@ -84,6 +85,7 @@ getStyle = function() {
 }
 function styleGeoJSON() {
     let style = getStyle()
+    LayerState.setStyle(style)
     layerRegion.setStyle(style)
     user_shapefile.setStyle(style)
     user_geojson.setStyle(style)
@@ -149,7 +151,7 @@ function countriesESRI() {
     return layer
 }
 function statesESRI() {
-    let region = $("#states").val()
+    let state = $("#states").val()
     let where = "1=1"
     if (state !== "") {
         where = "STATE = '" + state + "'"
@@ -220,12 +222,15 @@ function makeControls() {
     let layers = {
         "Drawing on Map": drawnItems,
         "Region Boundaries": layerRegion
+        /*"State Boundaries": stateLayer*/
     }
 
     if (newLayer) {
         layers["Custom Layer"] = newLayer
     }
-
+    if (stateLayer) {
+        layers["State Boundaries"] = stateLayer
+    }
     if (layerWMS) {
         layers["Animated Nowcast Layer"] = layerWMS
     }
@@ -235,8 +240,11 @@ function makeControls() {
 function clearMap() {
     controlsObj.removeLayer(layerWMS)
     mapObj.removeLayer(layerWMS)
+    controlsObj.removeLayer(stateLayer)
+    mapObj.removeLayer(stateLayer)
     controlsObj.removeLayer(layerRegion)
     mapObj.removeControl(controlsObj)
+
 }
 
 ////////////////////////////////////////////////////////////////////////  LOAD THE MAP
