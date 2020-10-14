@@ -11,15 +11,15 @@ $.ajaxSetup({
     }
 })
 
-var url =
+var urlnw =
     "https://maps.disasters.nasa.gov/ags03/rest/services/GPM_NRT/GPM_NRT_3hr/ImageServer"
 
 var newLayer = L.esri
     .imageMapLayer({
-        url: url,
+        urlnw: urlnw,
         opacity: 0
         // only necessary for old versions of ArcGIS Server
-        useCors: false
+        /*useCors: false*/
     })
     .addTo(mapObj)
 
@@ -28,14 +28,14 @@ var url =
 
 var stateLayer = L.esri
     .imageMapLayer({
-        url: url
+        url: url,
         opacity: 0
-        useCors: false
+        /*useCors: false*/
     })
     .addTo(mapObj)
 
 let layerWMS = newWMS() // adds the wms raster layer
-let stateLayer = statesESRI() //adds the state boundaries of Brazil from esri living atlas
+let stateBound = statesESRI() //adds the state boundaries of Brazil from esri living atlas
 let layerRegion = regionsESRI() // adds the world region boundaries from esri living atlas
 let controlsObj = makeControls() // the layer toggle controls top-right corner
 legend.addTo(mapObj) // add the legend graphic to the map
