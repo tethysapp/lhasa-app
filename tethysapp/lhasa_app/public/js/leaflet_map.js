@@ -228,7 +228,7 @@ function makeControls() {
     if (newLayer) {
         layers["Custom Layer"] = newLayer
     }
-    if (stateLayer) {
+    if (statebound) {
         layers["State Boundaries"] = stateLayer
     }
     if (layerWMS) {
