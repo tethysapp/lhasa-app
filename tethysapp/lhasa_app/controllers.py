@@ -1,10 +1,14 @@
 from django.shortcuts import render
 from tethys_sdk.gizmos import SelectInput, RangeSlider
 from tethys_sdk.permissions import login_required
+from tethys_sdk.workspaces import app_workspace
+
+import json
+import os
 
 
-@login_required()
-def home(request):
+@app_workspace
+def home(request, app_workspace):
     """
     Controller for the app home page.
     """
@@ -24,7 +28,7 @@ def home(request):
         name='variables',
         multiple=False,
         original=True,
-        options=(('GPM IMERG 30 min Precip. Accumulation', 'Tair_f_inst'),
+        options=(('GPM IMERG 30 min Precip. Accumulation', '1'),
                  ('GPM IMERG 3 hour Precip. Accumulation', 'CanopInt_inst'),
                  ('GPM IMERG 1 day Precip. Accumulation', 'Qg_tavg'),
                  ('GPM IMERG 3 day Precip. Accumulation', 'ECanop_tavg'),
@@ -32,75 +36,23 @@ def home(request):
                  ('Global Landslide Nowcast', 'PotEvap_tavg'),
                  ('Global Landslide Nowcast updated every 3 hours', 'Rainf_f_tavg')),
     )
+
+    states_json_file_path = os.path.join(app_workspace.path, 'brazil-states.json')
+
+    options = [('None', 'none')]
+    with open(states_json_file_path) as f:
+        data = json.load(f)
+        features = data.get('features')
+        for feature in features:
+            newOption = (feature.get('properties').get('name'), feature.get('properties').get('id'))
+            options.append(newOption)
+
     states = SelectInput(
         display_text='Pick A State (ESRI Living Atlas)',
         name='states',
         multiple=False,
         original=True,
-        options=(('Brasil', ''),
-                 ('Acre', 'Acre'),
-                 ('Alagoas', 'Alagoas'),
-                 ('Amapa', 'Amapa'),
-                 ('Amazonas', 'Amazonas'),
-                 ('Bahia', 'Bahia'),
-                 ('Ceara', 'Ceara'),
-                 ('Distrito Federal', 'Distrito Federal'),
-                 ('Espirito Santo', 'Espirito Santo'),
-                 ('Goias', 'Goias'),
-                 ('Maranhao', 'Maranhao'),
-                 ('Mato Grosso', 'Mato Grosso'),
-                 ('Mato Grosso do Sul', 'Mato Grosso do Sul'),
-                 ('Minas Gerais', 'Minas Gerais'),
-                 ('Para', 'Para'),
-                 ('Paraiba', 'Paraiba'),
-                 ('Parana', 'Parana'),
-                 ('Pernambuco', 'Pernambuco'),
-                 ('Piaui', 'Piaui'),
-                 ('Rio de Janeiro', 'Rio de Janeiro'),
-                 ('Rio Grande do Norte', 'Rio Grande do Norte'),
-                 ('Rio Grande do Sul', 'Rio Grande do Sul'),
-                 ('Rodonia', 'Rodonia'),
-                 ('Roraima', 'Roraima'),
-                 ('Santa Catarina', 'Santa Catarina'),
-                 ('Sao Paulo', 'Sao Paulo'),
-                 ('Sergipe', 'Sergipe'),
-                 ('Toncantins', 'Toncantins'),
-                 ('None', 'none'),)
-    )
-    regions = SelectInput(
-        display_text='Pick A World Region (ESRI Living Atlas)',
-        name='regions',
-        multiple=False,
-        original=True,
-        options=(('Brasil', ''),
-                 ('Acre', 'Acre'),
-                 ('Alagoas', 'Alagoas'),
-                 ('Amapa', 'Australia/New Zealand'),
-                 ('Amazonas', 'Amazonas'),
-                 ('Bahia', 'Central America'),
-                 ('Ceara', 'Central Asia'),
-                 ('Distrito Federal', 'Eastern Africa'),
-                 ('Espirito Santo', 'Eastern Asia'),
-                 ('Goias', 'Eastern Europe'),
-                 ('Maranhao', 'European Russia'),
-                 ('Mato Grosso', 'Melanesia'),
-                 ('Mato Grosso do Sul', 'Micronesia'),
-                 ('Minas Gerais', 'Middle Africa'),
-                 ('Para', 'Northern Africa'),
-                 ('Paraiba', 'Northern America'),
-                 ('Parana', 'Northern Europe'),
-                 ('Pernambuco', 'Polynesia'),
-                 ('Piaui', 'South America'),
-                 ('Rio de Janeiro', 'Southeastern Asia'),
-                 ('Rio Grande do Norte', 'Southern Africa'),
-                 ('Rio Grande do Sul', 'Southern Asia'),
-                 ('Rodonia', 'Southern Europe'),
-                 ('Roraima', 'Western Africa'),
-                 ('Santa Catarina', 'Western Asia'),
-                 ('Sao Paulo', 'Western Europe'),
-                 ('Sergipe', 'none'),
-                 ('Toncantins', 'npne'),
-                 ('None', 'none'),)
+        options=tuple(options)
     )
 
     colorscheme = SelectInput(
@@ -178,7 +130,6 @@ def home(request):
     context = {
         # data options
         'variables': variables,
-        'regions': regions,
         'states': states,
         # display options
         'colorscheme': colorscheme,

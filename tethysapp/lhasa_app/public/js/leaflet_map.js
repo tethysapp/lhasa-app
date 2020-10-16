@@ -6,7 +6,10 @@ function map() {
         minZoom: 2,
         zoomSnap: 0.5,
         boxZoom: true,
-        maxBounds: L.latLngBounds(L.latLng(-32.741475, -86.544146), L.latLng(6.395598, -22.931077)),
+        maxBounds: L.latLngBounds(
+            L.latLng(-32.741475, -86.544146),
+            L.latLng(6.395598, -22.931077)
+        ),
         center: [0, 0],
         timeDimension: true,
         timeDimensionControl: true,
@@ -151,37 +154,15 @@ function countriesESRI() {
     return layer
 }
 function statesESRI() {
-    let state = $("#states").val()
-    let where = "1=1"
-    if (state !== "") {
-        where = "STATE = '" + state + "'"
-    }
-    let params = {
-        url:
-            "https://services.arcgis.com/ULBqC49IEeIR01GF/arcgis/rest/services/BrazilStates_2005/FeatureServer",
-        style: getStyle,
-        outSR: 4326,
-        where: where,
+
+    let statesFeatureGroup = L.geoJson(statesjs, {
         onEachFeature: function(feature, layer) {
-            layer.bindPopup(
-                '<a class="btn btn-default" role="button">' +
-                    feature.properties.STATE +
-                    "</a>"
-            )
+            layer.on("click", function(e) {
+                mapObj.fitBounds(layer.getBounds())
+            })
         }
-    }
-   if (state !== "") {
-        params["where"] = "STATE = '" + state + "'"
-    }
-    let layer = L.esri.featureLayer(params)
-    layer.addTo(mapObj)
-    layer
-        .query()
-        .where(where)
-        .bounds(function(error, latLngBounds, response) {
-            mapObj.flyToBounds(latLngBounds)
-        })
-    return layer
+    }).addTo(mapObj)
+    return statesFeatureGroup
 }
 
 ////////////////////////////////////////////////////////////////////////  LEGEND AND LATLON CONTROLS
@@ -220,20 +201,20 @@ latlon.onAdd = function() {
 // the layers box on the top right of the map
 function makeControls() {
     let layers = {
-        "Drawing on Map": drawnItems,
-        "Region Boundaries": layerRegion
+        "Drawing on Map": drawnItems
+        // "Region Boundaries": layerRegion
         /*"State Boundaries": stateLayer*/
     }
 
     if (newLayer) {
         layers["Custom Layer"] = newLayer
     }
-    if (statebound) {
-        layers["State Boundaries"] = stateLayer
-    }
-    if (layerWMS) {
-        layers["Animated Nowcast Layer"] = layerWMS
-    }
+    // if (statebound) {
+    //     layers["State Boundaries"] = statebound
+    // }
+    // if (layerWMS) {
+    //     layers["Animated Nowcast Layer"] = layerWMS
+    // }
     return L.control.layers(basemapObj, layers).addTo(mapObj)
 }
 // you need to remove layers when you make changes so duplicates dont persist and accumulate
@@ -244,7 +225,6 @@ function clearMap() {
     mapObj.removeLayer(stateLayer)
     controlsObj.removeLayer(layerRegion)
     mapObj.removeControl(controlsObj)
-
 }
 
 ////////////////////////////////////////////////////////////////////////  LOAD THE MAP

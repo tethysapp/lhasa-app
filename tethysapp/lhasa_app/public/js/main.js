@@ -1,5 +1,11 @@
 // base.html scripts has additional vars from render context
 let csrftoken = Cookies.get("csrftoken")
+var prevLayer = null
+
+const layerMapping = {
+    1: "https://maps.disasters.nasa.gov/ags03/rest/services/GPM_NRT/GPM_NRT_3hr/ImageServer"
+}
+
 function csrfSafeMethod(method) {
     return /^(GET|HEAD|OPTIONS|TRACE)$/.test(method)
 }
@@ -11,39 +17,24 @@ $.ajaxSetup({
     }
 })
 
-var url =
-    "https://maps.disasters.nasa.gov/ags03/rest/services/GPM_NRT/GPM_NRT_3hr/ImageServer"
-
-var newLayer = L.esri
-    .imageMapLayer({
-        url: url,
-        opacity: 0.5
+for (const [key, value] of Object.entries(layerMapping)) {
+    var newLayer = L.esri.imageMapLayer({
+        url: value,
+        opacity: 0.5,
         // only necessary for old versions of ArcGIS Server
-        /*useCors: false*/
+        useCors: false
     })
-    .addTo(mapObj)
+    layerMapping[key] = newLayer
+}
 
-var url =
-    "https://services.arcgis.com/ULBqC49IEeIR01GF/arcgis/rest/services/BrazilStates_2005/FeatureServer"
-
-var stateLayer = L.esri
-    .imageMapLayer({
-        url: url,
-        opacity: 0
-        /*useCors: false*/
-    })
-    .addTo(mapObj)
-
-let layerWMS = newWMS() // adds the wms raster layer
-let statebound = statesESRI() //adds the state boundaries of Brazil from esri living atlas
-let layerRegion = regionsESRI() // adds the world region boundaries from esri living atlas
+var statesFeatureGroup = statesESRI() //adds the state boundaries of Brazil from esri living atlas
 let controlsObj = makeControls() // the layer toggle controls top-right corner
 legend.addTo(mapObj) // add the legend graphic to the map
 latlon.addTo(mapObj) // add the box showing lat and lon to the map
 
 ////////////////////////////////////////////////////////////////////////  EVENT LISTENERS
 function update() {
-    layerWMS = newWMS()
+    // layerWMS = newWMS()
     stateLayer = statesESRI()
     controlsObj = makeControls()
     legend.addTo(mapObj)
@@ -58,13 +49,13 @@ function update() {
         controlsObj.addOverlay(stateLayer, "State Boundaries")
     }
  }*/
- function changestates(firedfrom) {
+function changestates(firedfrom) {
     let countryJQ = $("#countries")
     let stateJQ = $("#states")
     if (firedfrom === "country") {
         let country = countryJQ.val()
         regionJQ.val("none")
-     }   else {
+    } else {
         countryJQ.val("")
     }
     // change to none/empty input
@@ -114,9 +105,18 @@ $(".customs").keyup(function() {
 
 // data controls
 $("#variables").change(function() {
-    clearMap()
-    update()
-    getDrawnChart(drawnItems)
+    console.log("I was called")
+    console.log(layerMapping["1"])
+    let layerToSelect = 1
+
+    if (prevLayer != null) {
+        // Do something here to hide/remove the previous layer
+        // Remove that specific layer from the map
+    }
+
+    prevLayer = layerToSelect
+
+    layerMapping[layerToSelect].addTo(mapObj)
 })
 $("#dates").change(function() {
     clearMap()
@@ -130,9 +130,21 @@ $("#regions").change(function() {
     changeregions("region")
 })
 $("#states").change(function() {
-    clearMap()
-    changestates("state")
+    // Find the value of the current selected state
+
+    // jquery val
+    let id = 1
+    var matched_layer = null
+
+    statesFeatureGroup.eachLayer(function(layer) {
+        if (layer.feature.properties.id == id) {
+            matched_layer = layer
+        }
+    })
+
+    mapObj.fitBounds(matched_layer.getBounds())
 })
+
 $("#countriesGO").click(function() {
     changeregions("country")
 })
