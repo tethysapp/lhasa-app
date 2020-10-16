@@ -30,9 +30,4 @@ class LhasaApp(TethysAppBase):
                 url='lhasa-app',
                 controller='lhasa_app.controllers.home'
             ),
-            # UrlMap(
-            #     name='request_time_series',
-            #     url='multidimensional-series-template/request_time_series',
-            #     controller='lhasa_app.controllers.request_time_series'
-            # ),
         )

@@ -1,13 +1,6 @@
-import glob
-import os
-
-
-from django.http import JsonResponse
 from django.shortcuts import render
 from tethys_sdk.gizmos import SelectInput, RangeSlider
 from tethys_sdk.permissions import login_required
-
-from .app import LhasaApp as App
 
 
 @login_required()
@@ -74,41 +67,41 @@ def home(request):
                  ('Toncantins', 'Toncantins'),
                  ('None', 'none'),)
     )
-    # regions = SelectInput(
-    #     display_text='Pick A World Region (ESRI Living Atlas)',
-    #     name='regions',
-    #     multiple=False,
-    #     original=True,
-    #     options=(('Brasil', ''),
-    #              ('Acre', 'Acre'),
-    #              ('Alagoas', 'Alagoas'),
-    #              ('Amapa', 'Australia/New Zealand'),
-    #              ('Amazonas', 'Amazonas'),
-    #              ('Bahia', 'Central America'),
-    #              ('Ceara', 'Central Asia'),
-    #              ('Distrito Federal', 'Eastern Africa'),
-    #              ('Espirito Santo', 'Eastern Asia'),
-    #              ('Goias', 'Eastern Europe'),
-    #              ('Maranhao', 'European Russia'),
-    #              ('Mato Grosso', 'Melanesia'),
-    #              ('Mato Grosso do Sul', 'Micronesia'),
-    #              ('Minas Gerais', 'Middle Africa'),
-    #              ('Para', 'Northern Africa'),
-    #              ('Paraiba', 'Northern America'),
-    #              ('Parana', 'Northern Europe'),
-    #              ('Pernambuco', 'Polynesia'),
-    #              ('Piaui', 'South America'),
-    #              ('Rio de Janeiro', 'Southeastern Asia'),
-    #              ('Rio Grande do Norte', 'Southern Africa'),
-    #              ('Rio Grande do Sul', 'Southern Asia'),
-    #              ('Rodonia', 'Southern Europe'),
-    #              ('Roraima', 'Western Africa'),
-    #              ('Santa Catarina', 'Western Asia'),
-    #              ('Sao Paulo', 'Western Europe'),
-    #              ('Sergipe', 'none'),
-    #              ('Toncantins', 'npne'),
-    #              ('None', 'none'),)
-    # )
+    regions = SelectInput(
+        display_text='Pick A World Region (ESRI Living Atlas)',
+        name='regions',
+        multiple=False,
+        original=True,
+        options=(('Brasil', ''),
+                 ('Acre', 'Acre'),
+                 ('Alagoas', 'Alagoas'),
+                 ('Amapa', 'Australia/New Zealand'),
+                 ('Amazonas', 'Amazonas'),
+                 ('Bahia', 'Central America'),
+                 ('Ceara', 'Central Asia'),
+                 ('Distrito Federal', 'Eastern Africa'),
+                 ('Espirito Santo', 'Eastern Asia'),
+                 ('Goias', 'Eastern Europe'),
+                 ('Maranhao', 'European Russia'),
+                 ('Mato Grosso', 'Melanesia'),
+                 ('Mato Grosso do Sul', 'Micronesia'),
+                 ('Minas Gerais', 'Middle Africa'),
+                 ('Para', 'Northern Africa'),
+                 ('Paraiba', 'Northern America'),
+                 ('Parana', 'Northern Europe'),
+                 ('Pernambuco', 'Polynesia'),
+                 ('Piaui', 'South America'),
+                 ('Rio de Janeiro', 'Southeastern Asia'),
+                 ('Rio Grande do Norte', 'Southern Africa'),
+                 ('Rio Grande do Sul', 'Southern Asia'),
+                 ('Rodonia', 'Southern Europe'),
+                 ('Roraima', 'Western Africa'),
+                 ('Santa Catarina', 'Western Asia'),
+                 ('Sao Paulo', 'Western Europe'),
+                 ('Sergipe', 'none'),
+                 ('Toncantins', 'npne'),
+                 ('None', 'none'),)
+    )
 
     colorscheme = SelectInput(
         display_text='GLDAS Raster Color Scheme',
@@ -185,7 +178,7 @@ def home(request):
     context = {
         # data options
         'variables': variables,
-        # 'regions': regions,
+        'regions': regions,
         'states': states,
         # display options
         'colorscheme': colorscheme,
@@ -195,7 +188,6 @@ def home(request):
         'gjWt': gj_weight,
         'gjFlClr': gj_fillcolor,
         'gjFlOp': gj_fillopacity,
-
 
     }
 
