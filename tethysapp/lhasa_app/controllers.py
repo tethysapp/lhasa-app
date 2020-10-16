@@ -1,12 +1,6 @@
-import glob
-import os
-
-from django.http import JsonResponse
 from django.shortcuts import render
 from tethys_sdk.gizmos import SelectInput, RangeSlider
 from tethys_sdk.permissions import login_required
-
-from .app import LhasaApp as App
 
 
 @login_required()
@@ -194,7 +188,6 @@ def home(request):
         'gjWt': gj_weight,
         'gjFlClr': gj_fillcolor,
         'gjFlOp': gj_fillopacity,
-
 
     }
 
