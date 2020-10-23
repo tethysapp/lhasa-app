@@ -3,11 +3,12 @@ let csrftoken = Cookies.get("csrftoken")
 var prevLayer = null
 
 const layerMapping = {
-    1: "https://maps.disasters.nasa.gov/ags03/rest/services/NRT_Latest/GPM_NRT_30min_Latest/ImageServer",
-    2: "https://maps.disasters.nasa.gov/ags03/rest/services/GPM_NRT/GPM_NRT_3hr/ImageServer",
-    3: "https://maps.disasters.nasa.gov/ags03/rest/services/NRT_Latest/GPM_NRT_1day_Latest/ImageServer",
-    4: "https://maps.disasters.nasa.gov/ags03/rest/services/NRT_Latest/GPM_NRT_7day_Latest/ImageServer",
-    5: "https://maps.disasters.nasa.gov/ags03/rest/services/GPM_NRT/GPM_NRT_3hr/ImageServer"
+    1: "",
+    2: "https://maps.disasters.nasa.gov/ags03/rest/services/NRT_Latest/GPM_NRT_30min_Latest/ImageServer",
+    3: "https://maps.disasters.nasa.gov/ags03/rest/services/GPM_NRT/GPM_NRT_3hr/ImageServer",
+    4: "https://maps.disasters.nasa.gov/ags03/rest/services/NRT_Latest/GPM_NRT_1day_Latest/ImageServer",
+    5: "https://maps.disasters.nasa.gov/ags03/rest/services/NRT_Latest/GPM_NRT_7day_Latest/ImageServer",
+    6: "https://maps.disasters.nasa.gov/ags03/rest/services/GPM_NRT/GPM_NRT_3hr/ImageServer"
 }
 
 function csrfSafeMethod(method) {
@@ -43,16 +44,6 @@ function update() {
     controlsObj = makeControls()
     legend.addTo(mapObj)
 }
-/*function changestates(selection) {
-    let stateJQ = $("#states")
-    let state = statJQ.val()
-    mapObj.removeLayer(stateLayer)
-    controlsObj.removeLayer(stateLayer)
-    if (selection === "state") {
-        stateLayer = statesESRI()
-        controlsObj.addOverlay(stateLayer, "State Boundaries")
-    }
- }*/
 function changestates(firedfrom) {
     let countryJQ = $("#countries")
     let stateJQ = $("#states")
@@ -110,12 +101,13 @@ $(".customs").keyup(function() {
 // data controls
 $("#variables").change(function() {
 
-    console.log(layerMapping.val())
-    //LayerMapping["id"].options.url gives the url 
-    let layerToSelect = 1
+    //value of current data set
+    curvariable = $("#variables").val()
+
+    let layerToSelect = curvariable
 
     if (prevLayer != null) {
-        /*mapObj.removeLayer(prevLayer)*/
+        layerMapping[prevLayer].remove(mapObj)
         // Do something here to hide/remove the previous layer
         // Remove that specific layer from the map
     }
