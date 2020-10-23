@@ -3,7 +3,11 @@ let csrftoken = Cookies.get("csrftoken")
 var prevLayer = null
 
 const layerMapping = {
-    1: "https://maps.disasters.nasa.gov/ags03/rest/services/GPM_NRT/GPM_NRT_3hr/ImageServer"
+    1: "https://maps.disasters.nasa.gov/ags03/rest/services/NRT_Latest/GPM_NRT_30min_Latest/ImageServer",
+    2: "https://maps.disasters.nasa.gov/ags03/rest/services/GPM_NRT/GPM_NRT_3hr/ImageServer",
+    3: "https://maps.disasters.nasa.gov/ags03/rest/services/NRT_Latest/GPM_NRT_1day_Latest/ImageServer",
+    4: "https://maps.disasters.nasa.gov/ags03/rest/services/NRT_Latest/GPM_NRT_7day_Latest/ImageServer",
+    5: "https://maps.disasters.nasa.gov/ags03/rest/services/GPM_NRT/GPM_NRT_3hr/ImageServer"
 }
 
 function csrfSafeMethod(method) {
@@ -105,11 +109,13 @@ $(".customs").keyup(function() {
 
 // data controls
 $("#variables").change(function() {
-    console.log("I was called")
-    console.log(layerMapping["1"])
+
+    console.log(layerMapping.val())
+    //LayerMapping["id"].options.url gives the url 
     let layerToSelect = 1
 
     if (prevLayer != null) {
+        /*mapObj.removeLayer(prevLayer)*/
         // Do something here to hide/remove the previous layer
         // Remove that specific layer from the map
     }
@@ -130,10 +136,13 @@ $("#regions").change(function() {
     changeregions("region")
 })
 $("#states").change(function() {
-    // Find the value of the current selected state
+
+    //value of current selected state
+    curstate = $("#states").val()
 
     // jquery val
-    let id = 1
+    let id = curstate
+
     var matched_layer = null
 
     statesFeatureGroup.eachLayer(function(layer) {

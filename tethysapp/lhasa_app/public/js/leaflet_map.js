@@ -164,7 +164,6 @@ function statesESRI() {
     }).addTo(mapObj)
     return statesFeatureGroup
 }
-
 ////////////////////////////////////////////////////////////////////////  LEGEND AND LATLON CONTROLS
 let legend = L.control({ position: "bottomright" })
 legend.onAdd = function() {
@@ -207,7 +206,7 @@ function makeControls() {
     }
 
     if (newLayer) {
-        layers["Custom Layer"] = newLayer
+        layers["Nowcast"] = newLayer
     }
     // if (statebound) {
     //     layers["State Boundaries"] = statebound
@@ -221,6 +220,8 @@ function makeControls() {
 function clearMap() {
     controlsObj.removeLayer(layerWMS)
     mapObj.removeLayer(layerWMS)
+    controlsObj.removelayer(newlayer)
+    mapObj.removelayer(newlayer)
     controlsObj.removeLayer(stateLayer)
     mapObj.removeLayer(stateLayer)
     controlsObj.removeLayer(layerRegion)
