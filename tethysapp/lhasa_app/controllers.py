@@ -29,12 +29,10 @@ def home(request, app_workspace):
         multiple=False,
         original=True,
         options=(('GPM IMERG 30 min Precip. Accumulation', '1'),
-                 ('GPM IMERG 3 hour Precip. Accumulation', 'CanopInt_inst'),
-                 ('GPM IMERG 1 day Precip. Accumulation', 'Qg_tavg'),
-                 ('GPM IMERG 3 day Precip. Accumulation', 'ECanop_tavg'),
-                 ('GPM IMERG 7 day Precip. Accumulation', 'ESoil_tavg'),
-                 ('Global Landslide Nowcast', 'PotEvap_tavg'),
-                 ('Global Landslide Nowcast updated every 3 hours', 'Rainf_f_tavg')),
+                 ('GPM IMERG 3 hour Precip. Accumulation', '2'),
+                 ('GPM IMERG 1 day Precip. Accumulation', '3'),
+                 ('GPM IMERG 7 day Precip. Accumulation', '4'),
+                 ('Global Landslide Nowcast updated every 3 hours', '5')),
     )
 
     states_json_file_path = os.path.join(app_workspace.path, 'brazil-states.json')
