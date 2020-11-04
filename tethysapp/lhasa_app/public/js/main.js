@@ -8,7 +8,7 @@ const layerMapping = {
     3: "https://maps.disasters.nasa.gov/ags03/rest/services/GPM_NRT/GPM_NRT_3hr/ImageServer",
     4: "https://maps.disasters.nasa.gov/ags03/rest/services/NRT_Latest/GPM_NRT_1day_Latest/ImageServer",
     5: "https://maps.disasters.nasa.gov/ags03/rest/services/NRT_Latest/GPM_NRT_7day_Latest/ImageServer",
-    6: "https://maps.disasters.nasa.gov/ags03/rest/services/GPM_NRT/GPM_NRT_3hr/ImageServer"
+    6: "https://maps.disasters.nasa.gov/ags03/rest/services/NRT/landslide_nowcast/ImageServer"
 }
 
 function csrfSafeMethod(method) {
