@@ -4,11 +4,13 @@ var prevLayer = null
 
 const layerMapping = {
     1: "",
-    2: "https://maps.disasters.nasa.gov/ags03/rest/services/NRT_Latest/GPM_NRT_30min_Latest/ImageServer",
-    3: "https://maps.disasters.nasa.gov/ags03/rest/services/GPM_NRT/GPM_NRT_3hr/ImageServer",
-    4: "https://maps.disasters.nasa.gov/ags03/rest/services/NRT_Latest/GPM_NRT_1day_Latest/ImageServer",
-    5: "https://maps.disasters.nasa.gov/ags03/rest/services/NRT_Latest/GPM_NRT_7day_Latest/ImageServer",
-    6: "https://maps.disasters.nasa.gov/ags03/rest/services/NRT/landslide_nowcast/ImageServer"
+    //2: "https://maps.disasters.nasa.gov/ags03/rest/services/NRT_Latest/GPM_NRT_7day_Latest/ImageServer",
+    //2: "https://maps.disasters.nasa.gov/ags03/rest/services/NRT_Latest/GPM_NRT_30min_Latest/ImageServer",
+    //3: "https://maps.disasters.nasa.gov/ags03/rest/services/GPM_NRT/GPM_NRT_3hr/ImageServer", //this no longer exists
+    //3: "https://maps.disasters.nasa.gov/ags03/rest/services/NRT_Latest/GPM_NRT_1day_Latest/ImageServer",
+    2: "https://maps.disasters.nasa.gov/ags03/rest/services/GPM_NRT/GPM_NRT_7day/ImageServer",
+    3: "https://maps.disasters.nasa.gov/ags03/rest/services/NRT/landslide_nowcast/ImageServer",
+    4: 
 }
 
 function csrfSafeMethod(method) {
@@ -34,7 +36,7 @@ for (const [key, value] of Object.entries(layerMapping)) {
 
 var statesFeatureGroup = statesESRI() //adds the state boundaries of Brazil from esri living atlas
 let controlsObj = makeControls() // the layer toggle controls top-right corner
-legend.addTo(mapObj) // add the legend graphic to the map
+//legend.addTo(mapObj) // add the legend graphic to the map
 latlon.addTo(mapObj) // add the box showing lat and lon to the map
 
 ////////////////////////////////////////////////////////////////////////  EVENT LISTENERS
