@@ -33,9 +33,10 @@ def home(request, app_workspace):
                  #('GPM IMERG 30 min Precip. Accumulation', '2'),
                  #('GPM IMERG 3 hour Precip. Accumulation', '3'),
                  #('GPM IMERG 1 day Precip. Accumulation', '3'),
-                 ('GPM IMERG 7 day Precip. Accumulation', '2'),
-                 ('Global Landslide Nowcast updated every 3 hours', '3'),
-                 ('Points', '4')),
+                 #('Landslide Susceptibility', '2')
+                 ('GPM IMERG 7 day Precip. Accumulation', '3'),
+                 ('Global Landslide Nowcast updated every 3 hours', '4')),
+                 #('Points Test', '5')),
     )
 
     states_json_file_path = os.path.join(app_workspace.path, 'brazil-states.json')
@@ -47,6 +48,17 @@ def home(request, app_workspace):
         for feature in features:
             newOption = (feature.get('properties').get('name'), feature.get('properties').get('id'))
             options.append(newOption)
+
+    # points_json_file_path = os.path.join(app_workspace.path, 'points.json')
+    #
+    # options = [('None', 'none')]
+    # with open(points_json_file_path) as p:
+    #     data = json.load(p)
+    #     features = data.get('features')
+    #     for feature in features:
+    #         get = (feature.get('properties').get('name'), feature.get('properties').get('OBJECTID'))
+    #         options.append(get)
+
 
     states = SelectInput(
         display_text='Pick A State (ESRI Living Atlas)',

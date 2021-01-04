@@ -8,9 +8,10 @@ const layerMapping = {
     //2: "https://maps.disasters.nasa.gov/ags03/rest/services/NRT_Latest/GPM_NRT_30min_Latest/ImageServer",
     //3: "https://maps.disasters.nasa.gov/ags03/rest/services/GPM_NRT/GPM_NRT_3hr/ImageServer", //this no longer exists
     //3: "https://maps.disasters.nasa.gov/ags03/rest/services/NRT_Latest/GPM_NRT_1day_Latest/ImageServer",
-    2: "https://maps.disasters.nasa.gov/ags03/rest/services/GPM_NRT/GPM_NRT_7day/ImageServer",
-    3: "https://maps.disasters.nasa.gov/ags03/rest/services/NRT/landslide_nowcast/ImageServer",
-    4: 
+    //2: "https://maps.nccs.nasa.gov/server/rest/services/global_landslide_catalog/landslide_susceptibility/MapServer"
+    3: "https://maps.disasters.nasa.gov/ags03/rest/services/GPM_NRT/GPM_NRT_7day/ImageServer",
+    4: "https://maps.disasters.nasa.gov/ags03/rest/services/NRT/landslide_nowcast/ImageServer",
+   // 5: "",
 }
 
 function csrfSafeMethod(method) {
