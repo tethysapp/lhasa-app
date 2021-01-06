@@ -158,6 +158,7 @@ function statesESRI() {
     let statesFeatureGroup = L.geoJson(statesjs, {
         onEachFeature: function(feature, layer) {
             layer.on("click", function(e) {
+                $("#states").val(feature.properties.id)
                 mapObj.fitBounds(layer.getBounds())
             })
         }
