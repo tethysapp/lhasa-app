@@ -42,7 +42,7 @@ def home(request, app_workspace):
     states_json_file_path = os.path.join(app_workspace.path, 'brazil-states.json')
 
     options = [('None', 'none')]
-    with open(states_json_file_path) as f:
+    with open(states_json_file_path, encoding='utf-8') as f:
         data = json.load(f)
         features = data.get('features')
         for feature in features:

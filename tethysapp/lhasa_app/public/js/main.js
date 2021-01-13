@@ -62,10 +62,7 @@ function changestates(firedfrom) {
     if (firedfrom === "state") {
         stateLayer = statesESRI()
         controlsObj.addOverlay(stateLayer, "State Boundaries")
-    } /*else {
-        layerRegion = countriesESRI()
-        controlsObj.addOverlay(layerRegion, "Country Boundaries")
-    }*/
+    }
 }
 function changeregions(firedfrom) {
     let countryJQ = $("#countries")
@@ -133,21 +130,24 @@ $("#regions").change(function() {
 $("#states").change(function() {
 
     //value of current selected state
-    curstate = $("#states").val()
+    let curstate = $("#states").val()
+    id = curstate
 
-    // jquery val
-    let id = curstate
+    if (id == "none") {
+        mapObj.fitBounds(L.latLngBounds(L.latLng(-32.741475, -86.544146), L.latLng(6.395598, -22.931077)))
+    } else {
 
-    var matched_layer = null
+        var matched_layer = null
 
-    statesFeatureGroup.eachLayer(function(layer) {
-        if (layer.feature.properties.id == id) {
-            matched_layer = layer
+        statesFeatureGroup.eachLayer(function(layer) {
+            if (layer.feature.properties.id == id) {
+                matched_layer = layer
+            }
+        })
+
+        mapObj.fitBounds(matched_layer.getBounds())
         }
-    })
-
-    mapObj.fitBounds(matched_layer.getBounds())
-})
+ })
 
 $("#countriesGO").click(function() {
     changeregions("country")
