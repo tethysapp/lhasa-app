@@ -16,8 +16,8 @@ resource_files += find_resource_files('tethysapp/' + app_package + '/workspaces'
 
 setup(
     name=release_package,
-    version='0.0.1',
-    description='',
+    version='0.0.2',
+    description='LHASA App',
     long_description='',
     keywords='',
     author='Anna, Tessa, Rohit',
